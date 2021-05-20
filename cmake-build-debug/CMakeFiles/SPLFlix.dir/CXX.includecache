@@ -6,46 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/aviv/CLionProjects/SPLFlix/Action.cpp
-Action.h
-/home/aviv/CLionProjects/SPLFlix/Action.h
-
-/home/aviv/CLionProjects/SPLFlix/Action.h
-string
--
-iostream
--
-
-/home/aviv/CLionProjects/SPLFlix/Session.cpp
-Session.h
-/home/aviv/CLionProjects/SPLFlix/Session.h
-string
--
-
-/home/aviv/CLionProjects/SPLFlix/Session.h
-vector
--
-unordered_map
--
-string
--
-Action.h
-/home/aviv/CLionProjects/SPLFlix/Action.h
-
-/home/aviv/CLionProjects/SPLFlix/User.cpp
-User.h
-/home/aviv/CLionProjects/SPLFlix/User.h
-
-/home/aviv/CLionProjects/SPLFlix/User.h
-vector
--
-string
--
-unordered_set
--
-unordered_map
--
-
 /home/aviv/CLionProjects/SPLFlix/Watchable.cpp
 Watchable.h
 /home/aviv/CLionProjects/SPLFlix/Watchable.h
@@ -55,10 +15,4 @@ string
 -
 vector
 -
-
-/home/aviv/CLionProjects/SPLFlix/main.cpp
-iostream
--
-Session.h
-/home/aviv/CLionProjects/SPLFlix/Session.h
 

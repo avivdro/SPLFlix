@@ -3,13 +3,16 @@
 //
 
 #include "User.h"
+#include <string>
 
-User::User(const std::string &name) {
+using namespace std;
 
-}
+//ctor
+User::User(const std::string &name)
+    : history(), name(name) {}
 
 std::string User::getName() const {
-    return std::string();
+    return name;
 }
 
 std::vector<Watchable *> User::get_history() const {
