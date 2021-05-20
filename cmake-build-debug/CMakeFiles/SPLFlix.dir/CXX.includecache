@@ -6,13 +6,33 @@
 
 #IncludeRegexTransform: 
 
-/home/aviv/CLionProjects/SPLFlix/Watchable.cpp
-Watchable.h
-/home/aviv/CLionProjects/SPLFlix/Watchable.h
-
-/home/aviv/CLionProjects/SPLFlix/Watchable.h
+/home/aviv/CLionProjects/SPLFlix/Action.h
 string
 -
+iostream
+-
+
+/home/aviv/CLionProjects/SPLFlix/Session.cpp
+Session.h
+/home/aviv/CLionProjects/SPLFlix/Session.h
+string
+-
+iostream
+-
+fstream
+-
+
+/home/aviv/CLionProjects/SPLFlix/Session.h
 vector
 -
+unordered_map
+-
+string
+-
+Action.h
+/home/aviv/CLionProjects/SPLFlix/Action.h
+
+/home/aviv/CLionProjects/SPLFlix/main.cpp
+Session.h
+/home/aviv/CLionProjects/SPLFlix/Session.h
 

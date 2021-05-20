@@ -4,11 +4,14 @@
 
 #include "Session.h"
 #include <string>
+#include <iostream>
+#include <fstream>
+
 
 using namespace std;
 
 Session::Session(const std::string &configFilePath) {
-    cout << "testing";
+    cout << "will the real slim shady please stand up?";
 }
 
 Session::~Session() {
