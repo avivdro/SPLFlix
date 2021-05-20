@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/SPLFlix.dir/main.cpp.o CMakeFiles/SPLFlix.dir/Session.cpp.o CMakeFiles/SPLFlix.dir/Watchable.cpp.o CMakeFiles/SPLFlix.dir/Action.cpp.o CMakeFiles/SPLFlix.dir/User.cpp.o -o SPLFlix 
