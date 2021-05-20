@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/aviv/CLionProjects/SPLFlix/Action.h
+string
+-
+iostream
+-
+
+/home/aviv/CLionProjects/SPLFlix/Session.h
+vector
+-
+unordered_map
+-
+string
+-
+Action.h
+/home/aviv/CLionProjects/SPLFlix/Action.h
+
 /home/aviv/CLionProjects/SPLFlix/Watchable.cpp
 iostream
 -
@@ -19,4 +35,10 @@ string
 -
 vector
 -
+
+/home/aviv/CLionProjects/SPLFlix/main.cpp
+Session.h
+/home/aviv/CLionProjects/SPLFlix/Session.h
+Watchable.h
+/home/aviv/CLionProjects/SPLFlix/Watchable.h
 

@@ -22,7 +22,7 @@ public:
     virtual long getId() const;
     virtual int getLength() const;
     virtual std::vector<std::string> * getTags();
-    virtual std::string getTagsString();
+    virtual std::string getTagsString() const;
 private:
     //BUILT IN - UNCHANGEABLE
     const long id;

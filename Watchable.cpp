@@ -28,10 +28,12 @@ std::vector<std::string> *Watchable::getTags() {
 }
 
 //personal - for toString of MOVIE and EPISODE
-std::string Watchable::getTagsString() {
-    std::vector<string>* vec = getTags();
-    std::string s;
-    for (const auto &piece : *vec) s += piece;
+std::string Watchable::getTagsString() const {
+  const std::vector<std::string> vec = this->tags;
+    std::string s="[";
+    for (vector<string>::const_iterator it=vec.begin(); it!=vec.end()-1; it++)
+        s = s + (*it) + ", ";
+    s=s + vec[vec.size()-1] + "]";
     return s;
 }
 
@@ -45,7 +47,8 @@ Movie::Movie(long id, const std::string &name, int length, const std::vector<std
 Watchable(id, length, tags), name(name) {}
 
 std::string Movie::toString() const {
-    return to_string(getId()) + ": " + name + " - " + to_string(getLength()) + " minutes - ";
+    // <id>: <name> - <length> minutes - <tags>
+    return to_string(getId()) + ": " + name + " - " + to_string(getLength()) + " minutes - " + getTagsString();
     //TODO add tags!!!!
 }
 
@@ -65,7 +68,8 @@ Episode::Episode(long id, const std::string &seriesName, int length, int season,
         Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode){}
 
 std::string Episode::toString() const {
-    return to_string(getId()) + ": " + getSeriesName() + "S" + to_string(season) + "E" + to_string(episode) + " " +
+    //<id>: <seriesName> S<season>E<episode> - <length> minutes - <tags>
+    return to_string(getId()) + ": " + getSeriesName() + " S" + to_string(season) + "E" + to_string(episode) + " " +
             to_string(getLength()) + " minutes "; //TODO add tags
 }
 

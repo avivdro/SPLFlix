@@ -19,11 +19,15 @@ public:
     Session(const std::string &configFilePath);
     ~Session();
     void start();
+
 private:
     //BUILT IN - UNCHANGEABLE
     std::vector<Watchable*> content;
     std::vector<BaseAction*> actionsLog;
     std::unordered_map<std::string,User*> userMap;
     User* activeUser;
+    //OURS - free to edit and change
+    void extractContent(const std::string &configFilePath);
+
 };
 #endif
