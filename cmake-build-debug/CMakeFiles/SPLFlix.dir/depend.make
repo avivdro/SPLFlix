@@ -16,5 +16,6 @@ CMakeFiles/SPLFlix.dir/Watchable.cpp.o: ../Watchable.h
 
 CMakeFiles/SPLFlix.dir/main.cpp.o: ../Action.h
 CMakeFiles/SPLFlix.dir/main.cpp.o: ../Session.h
+CMakeFiles/SPLFlix.dir/main.cpp.o: ../Watchable.h
 CMakeFiles/SPLFlix.dir/main.cpp.o: ../main.cpp
 
