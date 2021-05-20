@@ -3,3 +3,18 @@
 //
 
 #include "Session.h"
+#include <string>
+
+using namespace std;
+
+Session::Session(const std::string &configFilePath) {
+    cout << "testing";
+}
+
+Session::~Session() {
+
+}
+
+void Session::start() {
+
+}
