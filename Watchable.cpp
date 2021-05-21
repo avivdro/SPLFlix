@@ -48,8 +48,7 @@ Watchable(id, length, tags), name(name) {}
 
 std::string Movie::toString() const {
     // <id>: <name> - <length> minutes - <tags>
-    return to_string(getId()) + ": " + name + " - " + to_string(getLength()) + " minutes - " + getTagsString();
-    //TODO add tags!!!!
+    return to_string(getId()) + ": " + name + " | " + to_string(getLength()) + " minutes - " + getTagsString();
 }
 
 Watchable *Movie::getNextWatchable(Session &) const {
@@ -69,8 +68,8 @@ Episode::Episode(long id, const std::string &seriesName, int length, int season,
 
 std::string Episode::toString() const {
     //<id>: <seriesName> S<season>E<episode> - <length> minutes - <tags>
-    return to_string(getId()) + ": " + getSeriesName() + " S" + to_string(season) + "E" + to_string(episode) + " " +
-            to_string(getLength()) + " minutes "; //TODO add tags
+    return to_string(getId()) + ": " + getSeriesName() + " | S" + to_string(season) + "E" + to_string(episode) + " " +
+            to_string(getLength()) + " minutes - " + getTagsString();
 }
 
 Watchable *Episode::getNextWatchable(Session &) const {
