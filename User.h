@@ -35,6 +35,7 @@ public:
     LengthRecommenderUser(const std::string& name);
     virtual Watchable* getRecommendation(Session& s);
 private:
+    //TODO seems like i have to add a field for AVERAGE LENGTH???
 };
 
 class RerunRecommenderUser : public User {

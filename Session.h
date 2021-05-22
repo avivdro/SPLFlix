@@ -19,6 +19,8 @@ public:
     Session(const std::string &configFilePath);
     ~Session();
     void start();
+    //OURS-
+    void printAllContent();
 
 private:
     //BUILT IN - UNCHANGEABLE
@@ -28,6 +30,6 @@ private:
     User* activeUser;
     //OURS - free to edit and change
     void extractContent(const std::string &configFilePath);
-
+    void initDefaultUser();
 };
 #endif

@@ -3,25 +3,40 @@
 //
 
 #include "Action.h"
+#include "Session.h"
 
-BaseAction::BaseAction() {
+using namespace std;
+
+//ctor
+BaseAction::BaseAction() : errorMsg("The action encountered an error."), status(PENDING){
 
 }
 
+//destructor
+BaseAction::~BaseAction() = default;
+
 ActionStatus BaseAction::getStatus() const {
-    return ERROR;
+    return status;
+}
+
+string BaseAction::getStatusString() const {
+    switch (status) {
+        case PENDING: return "Pending...";
+        case ERROR: return "Error: " + getErrorMsg();
+        case COMPLETED: return "Complete!";
+    }
 }
 
 void BaseAction::complete() {
-
+    status = COMPLETED;
 }
 
 void BaseAction::error(const std::string &errorMsg) {
-
+    status = ERROR;
 }
 
 std::string BaseAction::getErrorMsg() const {
-    return std::string();
+    return errorMsg;
 }
 //-------------------------------------------------------------------
 //CREATE USER
@@ -67,11 +82,13 @@ std::string DuplicateUser::toString() const {
 //-------------------------------------------------------------------
 //PRINT CONTENT LIST
 void PrintContentList::act(Session &sess) {
-
+    sess.printAllContent();
+    complete();
+    //TODO dont know if this works. need to check -aviv
 }
 
 std::string PrintContentList::toString() const {
-    return std::string();
+    return "Printed content list. Status: " + getStatusString();
 }
 
 //-------------------------------------------------------------------

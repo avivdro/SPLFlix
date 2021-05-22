@@ -22,6 +22,8 @@ public:
     ActionStatus getStatus() const;
     virtual void act(Session& sess)=0;
     virtual std::string toString() const=0;
+    virtual ~BaseAction();
+    virtual std::string getStatusString() const;
 protected:
     //BUILT IN - UNCHANGEABLE
     void complete();

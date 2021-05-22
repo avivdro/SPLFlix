@@ -16,7 +16,7 @@ std::string User::getName() const {
 }
 
 std::vector<Watchable *> User::get_history() const {
-    return std::vector<Watchable *>();
+    return history;
 }
 
 LengthRecommenderUser::LengthRecommenderUser(const std::string &name) : User(name) {

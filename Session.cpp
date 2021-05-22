@@ -15,12 +15,12 @@ using namespace std;
 Session::Session(const std::string &configFilePath) {
     cout << "will the real slim shady please stand up?" << endl;
     //TODO remove this :)
+    cout << "SPLFlix is now on!";
     extractContent(configFilePath);
+    printAllContent();
 }
 
-Session::~Session() {
-
-}
+Session::~Session() = default;
 
 void Session::start() {
 
@@ -44,7 +44,7 @@ void Session::extractContent(const string &configFilePath){
         auto *newMovie = new Movie(id, movie["name"], movie["length"], movie["tags"]);
         content.push_back(newMovie);
         id++;
-        cout << newMovie->toString() << endl;
+        //cout << newMovie->toString() << endl;  //TODO remove this print
     }
     //extracting EPISODES
     json jEpisodes = j["tv_series"];
@@ -59,16 +59,23 @@ void Session::extractContent(const string &configFilePath){
             int numOfEpisodes = element;
             int episodeNum = 1;
             for (int i = 1; i<= numOfEpisodes; i++) {
-                Episode *newEp = new Episode(id, seriesName, episodeLength, season, episodeNum, tags);
+                auto *newEp = new Episode(id, seriesName, episodeLength, season, episodeNum, tags);
                 content.push_back(newEp);
                 id++;
                 episodeNum++;
-                cout << newEp->toString() << endl;
+                //cout << newEp->toString() << endl; //TODO remove this print
             }
             season++;
         }
     }
+}
 
+void Session::printAllContent() {
+    // method for PrintContentList action!
+    for (Watchable* w : content)
+        cout << w->toString() << endl;
+}
 
+void Session::initDefaultUser(){
 
 }
