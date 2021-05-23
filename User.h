@@ -33,7 +33,7 @@ public:
     virtual ~User();
     virtual User *clone(std::string &name) = 0;
     void addToHistory(Watchable *w);
-    bool isInHistory(const Watchable *w) const;
+    //bool isInHistory(const Watchable *w) const;
 
 protected:
     //BUILT IN - UNCHANGEABLE

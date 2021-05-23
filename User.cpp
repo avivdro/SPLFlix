@@ -4,6 +4,7 @@
 
 #include "User.h"
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -45,14 +46,12 @@ User::~User(){
 void User::addToHistory(Watchable *w) {
     history.push_back(w);
 }
-//is in history?
-bool User::isInHistory(const Watchable *w) const{
-    for (const auto &content: history){
-        if (*content == *w)
-            return true;
-    }
-    return false;
-}
+//is in history? TODO fix this somehow.
+//bool User::isInHistory(const Watchable *w) const{
+  //  if (std::find(history.begin(), history.end(), *w)!=history.end())
+    //    return true;
+    //return false;
+//}
 
 std::string User::getName() const {
     return name;
