@@ -17,7 +17,9 @@ Session::Session(const std::string &configFilePath) {
     //TODO remove this :)
     cout << "SPLFlix is now on!";
     extractContent(configFilePath);
-    printAllContent();
+    printAllContent(); //TODO remove this test
+    //create the default user:
+
 }
 
 Session::~Session() = default;

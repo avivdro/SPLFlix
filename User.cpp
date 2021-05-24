@@ -46,12 +46,13 @@ User::~User(){
 void User::addToHistory(Watchable *w) {
     history.push_back(w);
 }
-//is in history? TODO fix this somehow.
-//bool User::isInHistory(const Watchable *w) const{
-  //  if (std::find(history.begin(), history.end(), *w)!=history.end())
-    //    return true;
-    //return false;
-//}
+//is in history?
+bool User::isInHistory(Watchable *w) const{
+    if (std::find(history.begin(), history.end(), w) != history.end()){
+        return true;
+    }
+    return false;
+}
 
 std::string User::getName() const {
     return name;
@@ -84,15 +85,30 @@ void User::move(User &&other){
 
 
 //CHILD CLASSES----------------------
+//------------------------------------------------------------------------
+//LENGTH RECOMMENDER-----------------------------
+//ctor
+LengthRecommenderUser::LengthRecommenderUser(const std::string &name) : User(name), averageLength(0){}
 
-LengthRecommenderUser::LengthRecommenderUser(const std::string &name) : User(name) {
-
-}
-
+//TODO implement the next method
 Watchable *LengthRecommenderUser::getRecommendation(Session &s) {
     return nullptr;
 }
 
+//copy ctor
+LengthRecommenderUser::LengthRecommenderUser(const LengthRecommenderUser &other): User(other), averageLength(other.averageLength) {}
+
+//add to history: need to update avg.
+void LengthRecommenderUser::addToHistory(Watchable *w) {
+    int temp = averageLength * (history.size());
+    //temp += (w->getLength()); //TODO error here why
+    User::addToHistory(w);
+    averageLength = temp / history.size();
+}
+
+
+//------------------------------------------------------------------------
+//RERUN RECOMMENDER------------------------------
 RerunRecommenderUser::RerunRecommenderUser(const std::string &name) : User(name) {
 
 }
@@ -101,6 +117,8 @@ Watchable *RerunRecommenderUser::getRecommendation(Session &s) {
     return nullptr;
 }
 
+//------------------------------------------------------------------------
+//GENRE RECOMMENDER------------------------------
 GenreRecommenderUser::GenreRecommenderUser(const std::string &name) : User(name) {
 
 }

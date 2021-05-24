@@ -23,6 +23,7 @@ public:
     virtual int getLength() const;
     virtual std::vector<std::string> * getTags();
     virtual std::string getTagsString() const;
+    virtual bool operator==(const Watchable &other) const;
 private:
     //BUILT IN - UNCHANGEABLE
     const long id;

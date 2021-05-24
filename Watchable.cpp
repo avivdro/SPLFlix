@@ -40,6 +40,11 @@ std::string Watchable::getTagsString() const {
 //destructor - default
 Watchable::~Watchable() = default;
 
+//comparator ==
+bool Watchable::operator==(const Watchable &other) const{
+    return id == other.id;
+}
+
 //-------------------------------------------------------------------
 //MOVIE
 //ctor

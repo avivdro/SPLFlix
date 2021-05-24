@@ -33,7 +33,7 @@ public:
     virtual ~User();
     virtual User *clone(std::string &name) = 0;
     void addToHistory(Watchable *w);
-    //bool isInHistory(const Watchable *w) const;
+    bool isInHistory(Watchable *w) const;
 
 protected:
     //BUILT IN - UNCHANGEABLE
@@ -51,10 +51,16 @@ private:
 class LengthRecommenderUser : public User {
 public:
     //BUILT IN - UNCHANGEABLE
+    //ctor
     LengthRecommenderUser(const std::string& name);
     virtual Watchable* getRecommendation(Session& s);
+    //OURS - free to edit
+    //copy ctor
+    LengthRecommenderUser(const LengthRecommenderUser &other);
+    void addToHistory(Watchable *w);
 private:
-    //TODO seems like i have to add a field for AVERAGE LENGTH???
+    int averageLength; //this is the avg
+    //void calculateAvg();
 };
 
 class RerunRecommenderUser : public User {
