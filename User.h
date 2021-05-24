@@ -31,7 +31,7 @@ public:
     User &operator=(User &&other);
     //destructor
     virtual ~User();
-    //virtual User *clone(std::string &name) = 0;
+    virtual User *clone(std::string &name) = 0;
 
     virtual void addToHistory(Watchable *w);
     bool isInHistory(Watchable *w) const;
@@ -60,6 +60,7 @@ public:
     LengthRecommenderUser(const LengthRecommenderUser &other);
     virtual void addToHistory(Watchable *w);
     virtual ~LengthRecommenderUser();
+    virtual User* clone(std::string &name);
 private:
     int averageLength; //this is the avg
     //void calculateAvg();
@@ -70,6 +71,8 @@ public:
     //BUILT IN - UNCHANGEABLE
     RerunRecommenderUser(const std::string& name);
     virtual Watchable* getRecommendation(Session& s);
+    //OURS:
+    virtual User* clone(std::string &name);
 private:
 };
 
@@ -78,6 +81,8 @@ public:
     //BUILT IN - UNCHANGEABLE
     GenreRecommenderUser(const std::string& name);
     virtual Watchable* getRecommendation(Session& s);
+    //OURS:
+    virtual User* clone(std::string &name);
 private:
 };
 

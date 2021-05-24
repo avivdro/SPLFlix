@@ -6,7 +6,7 @@
  - CreateUser - done ?
  - ChangeActiveUser - done ?
  - DeleteUser
- - DuplicateUser
+ - DuplicateUser - done ?
  - PrintContentList - done ?
  - PrintWatchHistory
  - Watch
@@ -45,7 +45,7 @@ void BaseAction::complete() {
 
 void BaseAction::error(const std::string &errorMsg) {
     status = ERROR;
-    cout << errorMsg; //TODO is this needed?
+    cout << errorMsg;
 }
 
 std::string BaseAction::getErrorMsg() const {
@@ -79,7 +79,7 @@ void CreateUser::act(Session &sess) {
 }
 
 std::string CreateUser::toString() const {
-    return "Created user: " + name + " -STATUS: " + getStatusString();
+    return "Create user: " + name + " -STATUS: " + getStatusString();
 }
 
 CreateUser::CreateUser(string &name, int code): name(name), code(code){
@@ -99,7 +99,7 @@ void ChangeActiveUser::act(Session &sess) {
 }
 
 std::string ChangeActiveUser::toString() const {
-    return "Changed active user to " + name + " -STATUS: " + getStatusString();
+    return "Change active user to " + name + " -STATUS: " + getStatusString();
 }
 
 ChangeActiveUser::ChangeActiveUser(std::string &name): name(name){
@@ -110,22 +110,55 @@ ChangeActiveUser::ChangeActiveUser(std::string &name): name(name){
 //-------------------------------------------------------------------
 //DELETE USER
 void DeleteUser::act(Session &sess) {
-
+    if (sess.deleteUser(name))
+        complete();
+    else
+        error(getErrorMsg());
 }
 
 std::string DeleteUser::toString() const {
-    return std::string();
+    return "Delete user: " + name + " -STATUS: " + getStatusString();
+}
+
+DeleteUser::DeleteUser(string &name) : name(name){
+    string msg = "Error deleting user " + name;
+    this->setErrorMsg(msg);
 }
 
 //-------------------------------------------------------------------
 //DUPLICATE USER
 void DuplicateUser::act(Session &sess) {
-
+    User *old = sess.getUserByName(oldName);
+    if (old == nullptr) {
+        //this means old user does not exist
+        error(getErrorMsg());
+        return;
+    }
+    if (sess.getUserByName(newName) != nullptr) {
+        //this means there already exists a user with that name.
+        error(getErrorMsg());
+        return;
+    }
+    //here: oldUser exists and newUser does not.
+    User *newUser = old->clone(newName);
+    if (sess.addUser(newName, newUser)) {
+        complete();
+        return;
+    }
+    delete (newUser);
+    newUser = nullptr;
+    error(getErrorMsg());
 }
 
 std::string DuplicateUser::toString() const {
-    return std::string();
+    return "Duplicate user " + oldName + " to new user " + newName;
 }
+
+DuplicateUser::DuplicateUser(string &oldName, string &newName) : oldName(oldName), newName(newName){
+    string msg = "Error duplicating user " + oldName;
+    this->setErrorMsg(msg);
+}
+
 
 //-------------------------------------------------------------------
 //PRINT CONTENT LIST
@@ -136,7 +169,7 @@ void PrintContentList::act(Session &sess) {
 }
 
 std::string PrintContentList::toString() const {
-    return "Printed content list. -STATUS: " + getStatusString();
+    return "Print content list. -STATUS: " + getStatusString();
 }
 
 PrintContentList::PrintContentList() {

@@ -65,7 +65,7 @@ std::vector<Watchable *> User::get_history() const {
 
 void User::copy(const User &other){
     for (auto wPtr : other.history){
-        // history.push_back(wPtr->clone()); //TODO implement clone
+        history.push_back(wPtr->clone());
     }
 }
 
@@ -102,6 +102,13 @@ LengthRecommenderUser::LengthRecommenderUser(const LengthRecommenderUser &other)
 //destructor
 LengthRecommenderUser::~LengthRecommenderUser() = default;
 
+//clone
+User *LengthRecommenderUser::clone(string &name){
+    auto *clone = new LengthRecommenderUser(name);
+    *clone = *this;
+    return clone;
+}
+
 //add to history: need to update avg.
 void LengthRecommenderUser::addToHistory(Watchable *w) {
     int temp = averageLength * (history.size());
@@ -121,6 +128,13 @@ Watchable *RerunRecommenderUser::getRecommendation(Session &s) {
     return nullptr;
 }
 
+//clone
+User *RerunRecommenderUser::clone(string &name){
+    auto *clone = new RerunRecommenderUser(name);
+    *clone = *this;
+    return clone;
+}
+
 //------------------------------------------------------------------------
 //GENRE RECOMMENDER------------------------------
 GenreRecommenderUser::GenreRecommenderUser(const std::string &name) : User(name) {
@@ -129,4 +143,11 @@ GenreRecommenderUser::GenreRecommenderUser(const std::string &name) : User(name)
 
 Watchable *GenreRecommenderUser::getRecommendation(Session &s) {
     return nullptr;
+}
+
+//clone
+User *GenreRecommenderUser::clone(string &name){
+    auto *clone = new GenreRecommenderUser(name);
+    *clone = *this;
+    return clone;
 }

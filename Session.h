@@ -24,6 +24,8 @@ public:
     void printAllContent();
     bool addUser(std::string &name, User* newUser);
     bool setActiveUser(std::string &name);
+    User* getUserByName(std::string &name);
+    bool deleteUser(std::string &name);
 private:
     //BUILT IN - UNCHANGEABLE
     std::vector<Watchable*> content;

@@ -22,13 +22,20 @@ Session::Session(const std::string &configFilePath) {
     printAllContent(); //TODO remove this test
     //create the default user:
     initDefaultUser();
-
+    start();
 }
 
 Session::~Session() = default;
 
 void Session::start() {
+    //forever (almost):
+    //get input
 
+    //process what action
+
+    //do the thing
+
+    //repeat!
 }
 
 void Session::extractContent(const string &configFilePath){
@@ -88,13 +95,10 @@ bool Session::addUser(std::string &name, User *newUser) {
 }
 
 void Session::initDefaultUser(){
-    LengthRecommenderUser def = LengthRecommenderUser("default");
-    //TODO something with user map...
     string defaultName = "default";
     auto createUser = CreateUser(defaultName, 1);
     createUser.act(*this);
-    //activeUser = TODO what do to here???
-
+    setActiveUser(defaultName); //TODO make sure this works
 }
 
 unordered_map<string, User*> const &Session::getUserMap(){
@@ -109,4 +113,19 @@ bool Session::setActiveUser(string &name){
         return true;
     }
     return false;
+}
+
+User* Session::getUserByName(string &name){
+    auto found = getUserMap().find(name);
+    if (found != getUserMap().end()){
+        return found->second;
+    }
+    return nullptr;
+}
+
+bool Session::deleteUser(string &name){
+    User *toDelete = getUserByName(name);
+    delete toDelete;
+    toDelete = nullptr;
+    return userMap.erase(name);
 }

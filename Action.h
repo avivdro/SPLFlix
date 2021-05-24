@@ -67,6 +67,11 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session & sess);
     virtual std::string toString() const;
+    DeleteUser(std::string &name);
+    //OURS:
+private:
+    //OURS:
+    std::string name;
 };
 
 
@@ -75,6 +80,11 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session & sess);
     virtual std::string toString() const;
+    //OURS:
+    DuplicateUser(std::string &oldName, std::string &newName);
+private:
+    std::string oldName;
+    std::string newName;
 };
 
 class PrintContentList : public BaseAction {

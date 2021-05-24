@@ -64,6 +64,10 @@ std::string Movie::getName() {
     return name;
 }
 
+Watchable *Movie::clone(){
+    return new Movie(*this);
+}
+
 //-------------------------------------------------------------------
 //EPISODE
 
@@ -95,4 +99,8 @@ int Episode::getEpisode() {
 
 long Episode::getNextEpisodeId() {
     return nextEpisodeId;
+}
+
+Watchable *Episode::clone(){
+    return new Episode(*this);
 }
