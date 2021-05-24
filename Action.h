@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include "User.h"
 
 class Session;
 
@@ -24,6 +25,7 @@ public:
     virtual std::string toString() const=0;
     virtual ~BaseAction();
     virtual std::string getStatusString() const;
+    virtual void setErrorMsg(std::string &msg);
 protected:
     //BUILT IN - UNCHANGEABLE
     void complete();
@@ -40,6 +42,12 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session& sess);
     virtual std::string toString() const;
+    //OURS - free to edit:
+    CreateUser(std::string &name, int code);
+private:
+    //OURS
+    std::string name;
+    int code; //code = 1: len, 2: rer, 3: gen.
 };
 
 class ChangeActiveUser : public BaseAction {
@@ -47,6 +55,11 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session& sess);
     virtual std::string toString() const;
+    //OURS
+    ChangeActiveUser(std::string &name);
+private:
+    //OURS
+    std::string name;
 };
 
 class DeleteUser : public BaseAction {
@@ -69,6 +82,9 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act (Session& sess);
     virtual std::string toString() const;
+    //OURS:
+    //ctor
+    PrintContentList();
 };
 
 class PrintWatchHistory : public BaseAction {

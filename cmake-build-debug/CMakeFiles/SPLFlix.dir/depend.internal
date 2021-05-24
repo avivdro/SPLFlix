@@ -5,20 +5,24 @@ CMakeFiles/SPLFlix.dir/Action.cpp.o
  /home/aviv/CLionProjects/SPLFlix/Action.cpp
  /home/aviv/CLionProjects/SPLFlix/Action.h
  /home/aviv/CLionProjects/SPLFlix/Session.h
+ /home/aviv/CLionProjects/SPLFlix/User.h
 CMakeFiles/SPLFlix.dir/Session.cpp.o
  /home/aviv/CLionProjects/SPLFlix/Action.h
  /home/aviv/CLionProjects/SPLFlix/Session.cpp
  /home/aviv/CLionProjects/SPLFlix/Session.h
+ /home/aviv/CLionProjects/SPLFlix/User.h
  /home/aviv/CLionProjects/SPLFlix/Watchable.h
  /home/aviv/CLionProjects/SPLFlix/json.hpp
 CMakeFiles/SPLFlix.dir/User.cpp.o
  /home/aviv/CLionProjects/SPLFlix/User.cpp
  /home/aviv/CLionProjects/SPLFlix/User.h
+ /home/aviv/CLionProjects/SPLFlix/Watchable.h
 CMakeFiles/SPLFlix.dir/Watchable.cpp.o
  /home/aviv/CLionProjects/SPLFlix/Watchable.cpp
  /home/aviv/CLionProjects/SPLFlix/Watchable.h
 CMakeFiles/SPLFlix.dir/main.cpp.o
  /home/aviv/CLionProjects/SPLFlix/Action.h
  /home/aviv/CLionProjects/SPLFlix/Session.h
+ /home/aviv/CLionProjects/SPLFlix/User.h
  /home/aviv/CLionProjects/SPLFlix/Watchable.h
  /home/aviv/CLionProjects/SPLFlix/main.cpp

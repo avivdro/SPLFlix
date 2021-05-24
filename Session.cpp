@@ -4,6 +4,7 @@
 
 #include "Session.h"
 #include "Watchable.h"
+#include "User.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -19,6 +20,7 @@ Session::Session(const std::string &configFilePath) {
     extractContent(configFilePath);
     printAllContent(); //TODO remove this test
     //create the default user:
+    initDefaultUser();
 
 }
 
@@ -78,6 +80,13 @@ void Session::printAllContent() {
         cout << w->toString() << endl;
 }
 
-void Session::initDefaultUser(){
+bool Session::addUser(std::string &name, User *newUser) {
+    pair<string, User*> toInsert(name, newUser);
+    bool inserted = userMap.insert(toInsert).second;
+    return inserted;
+}
 
+void Session::initDefaultUser(){
+    LengthRecommenderUser def = LengthRecommenderUser("default");
+    //TODO something with user map...
 }

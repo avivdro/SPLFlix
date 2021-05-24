@@ -2,6 +2,18 @@
 // Created by aviv on 20/05/2021.
 //
 
+/*list of implemented actions:
+ - CreateUser - done?
+ - ChangeActiveUser
+ - DeleteUser
+ - DuplicateUser
+ - PrintContentList - done?
+ - PrintWatchHistory
+ - Watch
+ - PrintActionsLog
+ - Exit
+ */
+
 #include "Action.h"
 #include "Session.h"
 
@@ -33,30 +45,67 @@ void BaseAction::complete() {
 
 void BaseAction::error(const std::string &errorMsg) {
     status = ERROR;
+    cout << errorMsg; //TODO is this needed?
 }
 
 std::string BaseAction::getErrorMsg() const {
     return errorMsg;
 }
+
+void BaseAction::setErrorMsg(std::string &msg) {
+    errorMsg = msg;
+}
 //-------------------------------------------------------------------
 //CREATE USER
 void CreateUser::act(Session &sess) {
-
+    User *newUser;
+    if (code == 1) //len
+        newUser = new LengthRecommenderUser(name);
+    else if (code == 2) //rerun
+        newUser = new RerunRecommenderUser(name);
+    else if (code == 3) //genre
+        newUser = new GenreRecommenderUser(name);
+    else{
+        error(getErrorMsg());
+        return;
+    }
+    if (sess.addUser(name, newUser)){
+        complete();
+        return;
+    }
+    error(getErrorMsg());
+    delete (newUser);
+    newUser = nullptr;
 }
 
 std::string CreateUser::toString() const {
-    return std::string();
+    return "Created user: " + name + " -STATUS: " + getStatusString();
+}
+
+CreateUser::CreateUser(string &name, int code): name(name), code(code){
+    string msg = "Error creating user.";
+    this->setErrorMsg(msg);
 }
 
 //-------------------------------------------------------------------
 //CHANGE ACTIVE USER
 
 void ChangeActiveUser::act(Session &sess) {
-
+    //if (!sess.setActiveUser(name){
+    //    error(getErrorMsg());
+    //    return;
+    //}
+    //complete();
+    //TODO bool method set active user in session class
 }
 
 std::string ChangeActiveUser::toString() const {
-    return std::string();
+    return "Changed active user to " + name + " -STATUS: " + getStatusString();
+}
+
+ChangeActiveUser::ChangeActiveUser(std::string &name): name(name){
+    string msg = "Error changing active user.";
+    this->setErrorMsg(msg);
 }
 
 //-------------------------------------------------------------------
@@ -88,7 +137,12 @@ void PrintContentList::act(Session &sess) {
 }
 
 std::string PrintContentList::toString() const {
-    return "Printed content list. Status: " + getStatusString();
+    return "Printed content list. -STATUS: " + getStatusString();
+}
+
+PrintContentList::PrintContentList() {
+    string msg = "Error printing content list.";
+    this->setErrorMsg(msg);
 }
 
 //-------------------------------------------------------------------

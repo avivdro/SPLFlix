@@ -31,8 +31,9 @@ public:
     User &operator=(User &&other);
     //destructor
     virtual ~User();
-    virtual User *clone(std::string &name) = 0;
-    void addToHistory(Watchable *w);
+    //virtual User *clone(std::string &name) = 0;
+
+    virtual void addToHistory(Watchable *w);
     bool isInHistory(Watchable *w) const;
 
 protected:
@@ -57,7 +58,8 @@ public:
     //OURS - free to edit
     //copy ctor
     LengthRecommenderUser(const LengthRecommenderUser &other);
-    void addToHistory(Watchable *w);
+    virtual void addToHistory(Watchable *w);
+    virtual ~LengthRecommenderUser();
 private:
     int averageLength; //this is the avg
     //void calculateAvg();

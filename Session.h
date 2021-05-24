@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <string>
 #include "Action.h"
+#include "User.h"
 
 class User;
 class Watchable;
@@ -21,6 +22,7 @@ public:
     void start();
     //OURS-
     void printAllContent();
+    bool addUser(std::string &name, User* newUser);
 
 private:
     //BUILT IN - UNCHANGEABLE

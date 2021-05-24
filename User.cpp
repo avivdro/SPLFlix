@@ -3,6 +3,7 @@
 //
 
 #include "User.h"
+#include "Watchable.h"
 #include <string>
 #include <algorithm>
 
@@ -98,11 +99,14 @@ Watchable *LengthRecommenderUser::getRecommendation(Session &s) {
 //copy ctor
 LengthRecommenderUser::LengthRecommenderUser(const LengthRecommenderUser &other): User(other), averageLength(other.averageLength) {}
 
+//destructor
+LengthRecommenderUser::~LengthRecommenderUser() = default;
+
 //add to history: need to update avg.
 void LengthRecommenderUser::addToHistory(Watchable *w) {
     int temp = averageLength * (history.size());
-    //temp += (w->getLength()); //TODO error here why
-    User::addToHistory(w);
+    temp += (w->getLength());
+    User::addToHistory(w); //now history size is ++
     averageLength = temp / history.size();
 }
 
