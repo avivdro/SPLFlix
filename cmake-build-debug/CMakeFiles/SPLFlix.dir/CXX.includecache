@@ -27,6 +27,8 @@ Watchable.h
 /home/aviv/CLionProjects/SPLFlix/Watchable.h
 User.h
 /home/aviv/CLionProjects/SPLFlix/User.h
+Action.h
+/home/aviv/CLionProjects/SPLFlix/Action.h
 string
 -
 iostream
@@ -397,10 +399,4 @@ limits
 -
 type_traits
 -
-
-/home/aviv/CLionProjects/SPLFlix/main.cpp
-Session.h
-/home/aviv/CLionProjects/SPLFlix/Session.h
-Watchable.h
-/home/aviv/CLionProjects/SPLFlix/Watchable.h
 

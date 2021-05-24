@@ -5,6 +5,7 @@
 #include "Session.h"
 #include "Watchable.h"
 #include "User.h"
+#include "Action.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -89,4 +90,23 @@ bool Session::addUser(std::string &name, User *newUser) {
 void Session::initDefaultUser(){
     LengthRecommenderUser def = LengthRecommenderUser("default");
     //TODO something with user map...
+    string defaultName = "default";
+    auto createUser = CreateUser(defaultName, 1);
+    createUser.act(*this);
+    //activeUser = TODO what do to here???
+
+}
+
+unordered_map<string, User*> const &Session::getUserMap(){
+    return userMap;
+}
+
+bool Session::setActiveUser(string &name){
+    //this returns true if user with name exists and is set to activeUser
+    auto found = getUserMap().find(name);
+    if (found != getUserMap().end()){
+        activeUser = found->second;
+        return true;
+    }
+    return false;
 }

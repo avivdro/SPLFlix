@@ -23,7 +23,7 @@ public:
     //OURS-
     void printAllContent();
     bool addUser(std::string &name, User* newUser);
-
+    bool setActiveUser(std::string &name);
 private:
     //BUILT IN - UNCHANGEABLE
     std::vector<Watchable*> content;
@@ -33,5 +33,6 @@ private:
     //OURS - free to edit and change
     void extractContent(const std::string &configFilePath);
     void initDefaultUser();
+    const std::unordered_map<std::string, User *> &getUserMap();
 };
 #endif

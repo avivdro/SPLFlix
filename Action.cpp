@@ -3,11 +3,11 @@
 //
 
 /*list of implemented actions:
- - CreateUser - done?
- - ChangeActiveUser
+ - CreateUser - done ?
+ - ChangeActiveUser - done ?
  - DeleteUser
  - DuplicateUser
- - PrintContentList - done?
+ - PrintContentList - done ?
  - PrintWatchHistory
  - Watch
  - PrintActionsLog
@@ -91,12 +91,11 @@ CreateUser::CreateUser(string &name, int code): name(name), code(code){
 //CHANGE ACTIVE USER
 
 void ChangeActiveUser::act(Session &sess) {
-    //if (!sess.setActiveUser(name){
-    //    error(getErrorMsg());
-    //    return;
-    //}
-    //complete();
-    //TODO bool method set active user in session class
+    if (!sess.setActiveUser(name)){
+        error(getErrorMsg());
+        return;
+    }
+    complete();
 }
 
 std::string ChangeActiveUser::toString() const {
@@ -104,7 +103,7 @@ std::string ChangeActiveUser::toString() const {
 }
 
 ChangeActiveUser::ChangeActiveUser(std::string &name): name(name){
-    string msg = "Error changing active user.";
+    string msg = "Error changing active user to: " + name;
     this->setErrorMsg(msg);
 }
 
