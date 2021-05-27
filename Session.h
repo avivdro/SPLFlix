@@ -48,7 +48,7 @@ private:
     bool exit; //if true - exit program
     void parseInput(std::string &whatToDo);
     void addActionToLog(BaseAction *action);
-    void SortContentByLengthVector();
+    void sortContentByLengthVector();
     //-------------------------
     void sessCreateUser(std::vector<std::string> words);
     void sessChangeUser(std::vector<std::string> words);

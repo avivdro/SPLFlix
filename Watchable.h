@@ -24,6 +24,7 @@ public:
     virtual std::vector<std::string> * getTags();
     virtual std::string getTagsString() const;
     virtual bool operator==(const Watchable &other) const;
+    virtual bool operator<(const Watchable &other) const;
     virtual Watchable *clone() = 0;
     virtual std::string toStringForHistory() const =0;
     virtual std::string getSeriesName() const = 0;
@@ -64,6 +65,7 @@ public:
     virtual long getNextEpisodeId();
     virtual Watchable *clone();
     virtual std::string toStringForHistory() const;
+    void setNextEpisodeId(int whatToSet);
 private:
     //BUILT IN - UNCHANGEABLE
     std::string seriesName;

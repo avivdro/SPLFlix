@@ -46,6 +46,10 @@ bool Watchable::operator==(const Watchable &other) const{
     return id == other.id;
 }
 
+bool Watchable::operator<(const Watchable &other) const {
+    return length < other.getLength();
+}
+
 //-------------------------------------------------------------------
 //MOVIE
 //ctor
@@ -83,12 +87,14 @@ string Movie::getSeriesName() const{
 
 Episode::Episode(long id, const std::string &seriesName, int length, int season, int episode,
                  const std::vector<std::string> &tags) :
-        Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode){}
+        Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode){
+    nextEpisodeId=0;
+}
 
 std::string Episode::toString() const {
     //<id>: <seriesName> S<season>E<episode> - <length> minutes - <tags>
     return to_string(getId()) + ": " + getSeriesName() + " | S" + to_string(season) + "E" + to_string(episode) + " " +
-            to_string(getLength()) + " minutes - " + getTagsString() + "NEXT:" + to_string(nextEpisodeId);
+            to_string(getLength()) + " minutes - " + getTagsString();
 }
 
 Watchable *Episode::getNextWatchable(Session &) const {
@@ -109,6 +115,10 @@ int Episode::getEpisode() {
 
 long Episode::getNextEpisodeId() {
     return nextEpisodeId;
+}
+
+void Episode::setNextEpisodeId(int whatToSet) {
+    nextEpisodeId = whatToSet;
 }
 
 Watchable *Episode::clone(){

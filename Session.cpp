@@ -25,10 +25,12 @@ Session::Session(const std::string &configFilePath) {
     //create the default user:
     initDefaultUser();
     start();
+    //sortContentByLengthVector(); //delete later
 }
 
 Session::~Session() = default;
 
+//This is where it all goes down
 void Session::start() {
     //MAIN EVENT LOOP!!!!!!
     cout << "SPLFlix is now on!";
@@ -69,8 +71,6 @@ void Session::extractContent(const string &configFilePath){
         content.push_back(newMovie);
         id++;
     }
-    int episodesStartId = id;
-    //int tmp = id;
     //extracting EPISODES
     json jEpisodes = j["tv_series"];
     for (auto &epi : jEpisodes.items()) {
@@ -90,6 +90,15 @@ void Session::extractContent(const string &configFilePath){
                 episodeNum++;
             }
             season++;
+        }
+    }
+    //set the next episode id
+    for (int i =0; i<content.size()-1; i++){
+        if (auto* e = dynamic_cast<Episode*>(content[i])){
+            if (auto* next = dynamic_cast<Episode*>(content[i+1])){
+                if (e->getSeriesName() == next->getSeriesName())
+                    e->setNextEpisodeId(next->getId());
+            }
         }
     }
 }
@@ -156,9 +165,13 @@ std::vector<BaseAction*> Session::getActionsLog(){
     return this->actionsLog;
 }
 
-void SortContentByLengthVector(){
-
-
+void Session::sortContentByLengthVector(){
+    vector<Watchable *> sortedByLength = this->content;
+    std::sort(sortedByLength.begin(), sortedByLength.end());
+    cout << "now by time???" << endl;
+    for (int i = 0; i<sortedByLength.size(); i++){
+        cout << sortedByLength[i]->toString() << endl;
+    }
 }
 
 //------------------------------------------------------------------------
@@ -367,7 +380,26 @@ void Session::sessWatch(vector<string> words){
     auto cmd = new Watch(id);
     cmd->act(*this);
     addActionToLog(cmd);
+
+    //TODO was working here
     //get recommendation
+    bool didRecommend = false;
+    if (0<id && id<=this->getLastId()){
+        if (auto* e = dynamic_cast<Episode*>(content[id-1])){
+            if (e->getNextEpisodeId() != 0) {
+                cout << "need to recommend " << e->getNextEpisodeId() << endl; //TODO delete
+                string input;
+                cout << "Next recommendation: " << getWatchableById(e->getNextEpisodeId())->toStringForHistory() << endl;
+                cout << "Would you like to continue watching? [Y/N]: ";
+                cin >> input;
+                if (input =="y" || input == "Y")
+                {
+                    vector<string> nextCmd{"watch", to_string(e->getNextEpisodeId())};
+                    sessWatch(nextCmd);
+                }
+            }
+        }
+    }
     //ask the user if he wants the recommendation or not.
 }
 

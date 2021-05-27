@@ -191,7 +191,7 @@ void PrintWatchHistory::act(Session &sess) {
         cout << i << ". " << name << endl;
         i++;
     }
-    delete user;
+    //delete user;
     complete();
 }
 
