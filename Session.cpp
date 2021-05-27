@@ -68,8 +68,8 @@ void Session::extractContent(const string &configFilePath){
         auto *newMovie = new Movie(id, movie["name"], movie["length"], movie["tags"]);
         content.push_back(newMovie);
         id++;
-        //cout << newMovie->toString() << endl;  //TODO remove this print
     }
+    int episodesStartId = id;
     //int tmp = id;
     //extracting EPISODES
     json jEpisodes = j["tv_series"];
@@ -88,7 +88,6 @@ void Session::extractContent(const string &configFilePath){
                 content.push_back(newEp);
                 id++;
                 episodeNum++;
-                //cout << newEp->toString() << endl; //TODO remove this print
             }
             season++;
         }
@@ -157,6 +156,10 @@ std::vector<BaseAction*> Session::getActionsLog(){
     return this->actionsLog;
 }
 
+void SortContentByLengthVector(){
+
+
+}
 
 //------------------------------------------------------------------------
 void Session::parseInput(string &input){
@@ -223,15 +226,17 @@ Watchable* Session::getWatchableById(int id){
     if (id>=content.size()) {
         return nullptr;
     }
-    else {
-        //ok
-        if (content[id - 1]->getId() == id) {
-            return content[id - 1];
-        }
-        else {
-            return nullptr;
-        }
+    //ok
+    if (content[id - 1]->getId() == id) {
+        return content[id - 1];
     }
+    else {
+        return nullptr;
+    }
+}
+
+int Session::getLastId(){
+    return content.size();
 }
 
 //------------------------------------------------------------------------
@@ -245,7 +250,6 @@ Watchable* Session::getWatchableById(int id){
 void Session::sessCreateUser(vector<string> words){
     //FORMAT: createuser <username> <len/gen/rer>
     //check size of words
-    cout << "size " << words.size();
     if (words.size() != 3){
         cout << "Cannot do command: createuser syntax: 'createuser <username> <len/gen/rer>'";
         return;
@@ -388,4 +392,6 @@ void Session::sessExit(vector<string> words){
     cmd->act(*this);
     addActionToLog(cmd);
 }
+
+
 

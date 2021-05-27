@@ -72,6 +72,11 @@ Watchable *Movie::clone(){
 string Movie::toStringForHistory() const{
     return name;
 }
+string Movie::getSeriesName() const{
+    //this function should NEVER be called!!!!
+    return name;
+}
+
 
 //-------------------------------------------------------------------
 //EPISODE
@@ -83,7 +88,7 @@ Episode::Episode(long id, const std::string &seriesName, int length, int season,
 std::string Episode::toString() const {
     //<id>: <seriesName> S<season>E<episode> - <length> minutes - <tags>
     return to_string(getId()) + ": " + getSeriesName() + " | S" + to_string(season) + "E" + to_string(episode) + " " +
-            to_string(getLength()) + " minutes - " + getTagsString();
+            to_string(getLength()) + " minutes - " + getTagsString() + "NEXT:" + to_string(nextEpisodeId);
 }
 
 Watchable *Episode::getNextWatchable(Session &) const {
@@ -114,14 +119,5 @@ string Episode::toStringForHistory() const{
     return getSeriesName() + " S" + to_string(season) + "E" + to_string(episode);
 }
 
-void Episode::initNextEpisodeId(Session &sess){
-    //(if(episode(name
-    //if(sess.getWatchableById(sess.get))
-    //if (episode(name) == episode(name) + 1 )
-    // //return id+1
-    //else
-    //if the series name is not the same: return 0
-    //Episode* next = sess.getWatchableById(getId());
-    //if (next->getSeriesName() == getSeriesName())
-}
+
 

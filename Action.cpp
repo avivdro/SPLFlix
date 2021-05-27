@@ -146,8 +146,8 @@ void DuplicateUser::act(Session &sess) {
         complete();
         return;
     }
-    delete (newUser);
-    newUser = nullptr;
+    //delete (newUser);
+    //newUser = nullptr;
     error(getErrorMsg());
 }
 
@@ -184,9 +184,11 @@ void PrintWatchHistory::act(Session &sess) {
     User *user=sess.getActiveUser();
     vector<Watchable*> v=user->get_history();
     int i=1;
-    cout<<"Watch History for " + user->getName()<<endl;
-    for(vector<Watchable*>::iterator it=v.begin(); it!=v.end(); it++) {
-        cout << i + ". " + (*it)->toStringForHistory() << endl;
+    string name;
+    cout<<"Watch History for " + user->getName()<< endl;
+    for(auto & w : v) {
+        name = (w)->toStringForHistory();
+        cout << i << ". " << name << endl;
         i++;
     }
     delete user;
@@ -202,10 +204,10 @@ PrintWatchHistory::PrintWatchHistory(){}
 //-------------------------------------------------------------------
 //WATCH
 void Watch::act(Session &sess) {
-    //get the watchable and watch it. //TODO from here
+    //get the watchable and watch it.
     Watchable* w = sess.getWatchableById(id);
     if (w == nullptr){
-        string msg = "No movie/episode wuth that id.";
+        string msg = "No movie/episode with that id.";
         setErrorMsg(msg);
         error(getErrorMsg());
         return;
@@ -213,7 +215,6 @@ void Watch::act(Session &sess) {
     cout << "Watching: " + w->toStringForHistory();
     //add the watchable to user's watch history
     sess.addToWatchHistory(w);
-    delete w;
     complete();
 }
 
@@ -221,7 +222,7 @@ std::string Watch::toString() const {
     return "Watch: " + to_string(id) + " -STATUS:" + getStatusString();
 }
 
-Watch::Watch(int id){
+Watch::Watch(int id): id(id){
     string msg = "Error watching id " + to_string(id);
     this->setErrorMsg(msg);
 }
@@ -257,3 +258,5 @@ Exit::Exit(){
     string msg = "Error exiting session.";
     this->setErrorMsg(msg);
 }
+
+

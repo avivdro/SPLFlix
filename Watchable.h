@@ -26,6 +26,7 @@ public:
     virtual bool operator==(const Watchable &other) const;
     virtual Watchable *clone() = 0;
     virtual std::string toStringForHistory() const =0;
+    virtual std::string getSeriesName() const = 0;
 private:
     //BUILT IN - UNCHANGEABLE
     const long id;
@@ -43,6 +44,7 @@ public:
     virtual std::string getName();
     virtual Watchable *clone();
     virtual std::string toStringForHistory() const;
+    virtual std::string getSeriesName() const;
 private:
     //BUILT IN - UNCHANGEABLE
     std::string name;
@@ -62,7 +64,6 @@ public:
     virtual long getNextEpisodeId();
     virtual Watchable *clone();
     virtual std::string toStringForHistory() const;
-    void initNextEpisodeId(Session &sess);
 private:
     //BUILT IN - UNCHANGEABLE
     std::string seriesName;

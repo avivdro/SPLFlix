@@ -31,8 +31,8 @@ public:
     User* getActiveUser();
     std::vector<BaseAction*> getActionsLog();
     Watchable* getWatchableById(int id);
+    int getLastId();
     void addToWatchHistory(Watchable *w);
-
 
 private:
     //BUILT IN - UNCHANGEABLE
@@ -40,6 +40,7 @@ private:
     std::vector<BaseAction*> actionsLog;
     std::unordered_map<std::string,User*> userMap;
     User* activeUser;
+    std::vector<Watchable*> contentSortedByLength;
     //OURS - free to edit and change
     void extractContent(const std::string &configFilePath);
     void initDefaultUser();
@@ -47,6 +48,7 @@ private:
     bool exit; //if true - exit program
     void parseInput(std::string &whatToDo);
     void addActionToLog(BaseAction *action);
+    void SortContentByLengthVector();
     //-------------------------
     void sessCreateUser(std::vector<std::string> words);
     void sessChangeUser(std::vector<std::string> words);
