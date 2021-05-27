@@ -21,7 +21,7 @@ Session::Session(const std::string &configFilePath) {
     //TODO remove this :)
     exit = false;
     extractContent(configFilePath);
-    printAllContent(); //TODO remove this test
+    //printAllContent(); //TODO remove this test
     //create the default user:
     initDefaultUser();
     start();
@@ -36,14 +36,15 @@ void Session::start() {
     while (! exit){
         cout << "\n$ ";
         getline(cin, input);
-        cout << "start received: " << input;
+        //cout << "start received: " << input;
         parseInput(input);
-        clearInput();
+        //clearInput();
     }
     cout << "You have exited SPLFlix. See you later!";
 }
 
 void Session::clearInput(){
+    // Not sure that this is needed.
     cin.clear();
     int c;
     while ( (c=getchar()) != '\n' && c != EOF ){;}
@@ -69,6 +70,7 @@ void Session::extractContent(const string &configFilePath){
         id++;
         //cout << newMovie->toString() << endl;  //TODO remove this print
     }
+    //int tmp = id;
     //extracting EPISODES
     json jEpisodes = j["tv_series"];
     for (auto &epi : jEpisodes.items()) {
@@ -189,19 +191,19 @@ void Session::parseInput(string &input){
         sessDupUser(words);
     }
     else if (words[0] == "content"){
-        cout << "going to content "; //TODO delete
+        sessContent(words);
     }
     else if (words[0] == "watchhist"){
-        cout << "going to watch history"; //TODO delete
+        sessWatchHistory(words);
     }
     else if (words[0] == "watch"){
-        cout << "going to watch:"; //TODO delete
+        sessWatch(words);
     }
     else if (words[0] == "log"){
-        sessLog();
+        sessLog(words);
     }
     else if (words[0] == "exit"){
-        cout << "exit111"; //TODO delete
+        sessExit(words);
     }
     else{
         cout << "'" + words[0] + "'" + " is not a valid command";
@@ -211,6 +213,25 @@ void Session::parseInput(string &input){
 
 void Session::addActionToLog(BaseAction *action) {
     actionsLog.push_back(action);
+}
+
+void Session::addToWatchHistory(Watchable *w){
+    activeUser->addToHistory(w);
+}
+
+Watchable* Session::getWatchableById(int id){
+    if (id>=content.size()) {
+        return nullptr;
+    }
+    else {
+        //ok
+        if (content[id - 1]->getId() == id) {
+            return content[id - 1];
+        }
+        else {
+            return nullptr;
+        }
+    }
 }
 
 //------------------------------------------------------------------------
@@ -251,7 +272,6 @@ void Session::sessCreateUser(vector<string> words){
     addActionToLog(command);
 };
 
-// sessChangeUser
 void Session::sessChangeUser(vector<string> words) {
     //FORMAT: changeUser <username>
     //check size of words
@@ -268,7 +288,7 @@ void Session::sessChangeUser(vector<string> words) {
     command->act(*this);
     addActionToLog(command);
 }
-// deleteUser
+
 void Session::sessDeleteUser(vector<string> words) {
     //FORMAT: deleteUser <username>
     //check size of words
@@ -285,7 +305,6 @@ void Session::sessDeleteUser(vector<string> words) {
     command->act(*this);
     addActionToLog(command);
 }
-
 
 void Session::sessDupUser(std::vector<std::string> words) {
     //FORMAT: dupuser <originalname> <newusername>
@@ -304,13 +323,69 @@ void Session::sessDupUser(std::vector<std::string> words) {
     addActionToLog(command);
 }
 
+void Session::sessContent(vector<string> words){
+    //FORMAT: content
+    if (words.size() > 1){
+        cout << "Syntax error: 'content' command must not have more arguments.";
+        return;
+    }
+    auto cmd = new PrintContentList();
+    cmd->act(*this);
+    addActionToLog(cmd);
+}
 
-void Session::sessLog(){
+void Session::sessWatchHistory(vector<string> words){
+    //FORMAT: watchhist
+    if (words.size() > 1){
+        cout << "Syntax error: 'watchhist' command must not have more arguments.";
+        return;
+    }
+    auto cmd = new PrintWatchHistory();
+    cmd->act(*this);
+    addActionToLog(cmd);
+}
+
+void Session::sessWatch(vector<string> words){
+    //FORMAT: watch <id>
+    //Check that there are exactly two words
+    if (words.size() != 2){
+        cout << "Syntax error: Correct syntax for 'watch' command: 'watch <id>'";
+        return;
+    }
+    //check that words[1] is a number
+    int id = 0;
+    stringstream ss;
+    ss << words[1];
+    ss >> id;
+    if (id ==0 || to_string(id)!=words[1]){
+        cout << "Syntax error: Correct syntax for 'watch' command: 'watch <id>'";
+    }
+    auto cmd = new Watch(id);
+    cmd->act(*this);
+    addActionToLog(cmd);
+    //get recommendation
+    //ask the user if he wants the recommendation or not.
+}
+
+void Session::sessLog(vector<string> words){
     //FORMAT: log
-    cout << "got to sessLog" <<endl;
+    if (words.size() > 1){
+        cout << "Syntax error - 'log' command must not have more arguments.";
+        return;
+    }
     auto cmd = new PrintActionsLog();
     cmd->act(*this);
     addActionToLog(cmd);
 }
 
+void Session::sessExit(vector<string> words){
+    //FORMAT: exit
+    if (words.size() > 1){
+        cout << "Syntax error - 'exit' command must not have more arguments.";
+        return;
+    }
+    auto cmd = new Exit();
+    cmd->act(*this);
+    addActionToLog(cmd);
+}
 

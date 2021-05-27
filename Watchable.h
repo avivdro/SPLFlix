@@ -25,6 +25,7 @@ public:
     virtual std::string getTagsString() const;
     virtual bool operator==(const Watchable &other) const;
     virtual Watchable *clone() = 0;
+    virtual std::string toStringForHistory() const =0;
 private:
     //BUILT IN - UNCHANGEABLE
     const long id;
@@ -41,6 +42,7 @@ public:
     //OURS - free to use and edit
     virtual std::string getName();
     virtual Watchable *clone();
+    virtual std::string toStringForHistory() const;
 private:
     //BUILT IN - UNCHANGEABLE
     std::string name;
@@ -59,6 +61,8 @@ public:
     virtual int getEpisode();
     virtual long getNextEpisodeId();
     virtual Watchable *clone();
+    virtual std::string toStringForHistory() const;
+    void initNextEpisodeId(Session &sess);
 private:
     //BUILT IN - UNCHANGEABLE
     std::string seriesName;

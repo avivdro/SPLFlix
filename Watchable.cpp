@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iterator>
 #include "Watchable.h"
+#include "Session.h"
 
 using namespace std;
 
@@ -53,7 +54,7 @@ Watchable(id, length, tags), name(name) {}
 
 std::string Movie::toString() const {
     // <id>: <name> - <length> minutes - <tags>
-    return to_string(getId()) + ": " + name + " | " + to_string(getLength()) + " minutes - " + getTagsString();
+    return to_string(getId()) + ": " + name + " - " + to_string(getLength()) + " minutes - " + getTagsString();
 }
 
 Watchable *Movie::getNextWatchable(Session &) const {
@@ -66,6 +67,10 @@ std::string Movie::getName() {
 
 Watchable *Movie::clone(){
     return new Movie(*this);
+}
+
+string Movie::toStringForHistory() const{
+    return name;
 }
 
 //-------------------------------------------------------------------
@@ -104,3 +109,19 @@ long Episode::getNextEpisodeId() {
 Watchable *Episode::clone(){
     return new Episode(*this);
 }
+
+string Episode::toStringForHistory() const{
+    return getSeriesName() + " S" + to_string(season) + "E" + to_string(episode);
+}
+
+void Episode::initNextEpisodeId(Session &sess){
+    //(if(episode(name
+    //if(sess.getWatchableById(sess.get))
+    //if (episode(name) == episode(name) + 1 )
+    // //return id+1
+    //else
+    //if the series name is not the same: return 0
+    //Episode* next = sess.getWatchableById(getId());
+    //if (next->getSeriesName() == getSeriesName())
+}
+

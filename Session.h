@@ -30,6 +30,9 @@ public:
     static void clearInput();
     User* getActiveUser();
     std::vector<BaseAction*> getActionsLog();
+    Watchable* getWatchableById(int id);
+    void addToWatchHistory(Watchable *w);
+
 
 private:
     //BUILT IN - UNCHANGEABLE
@@ -44,10 +47,15 @@ private:
     bool exit; //if true - exit program
     void parseInput(std::string &whatToDo);
     void addActionToLog(BaseAction *action);
+    //-------------------------
     void sessCreateUser(std::vector<std::string> words);
     void sessChangeUser(std::vector<std::string> words);
     void sessDeleteUser(std::vector<std::string> words);
     void sessDupUser(std::vector<std::string> words);
-    void sessLog();
+    void sessContent(std::vector<std::string> words);
+    void sessWatchHistory(std::vector<std::string> words);
+    void sessWatch(std::vector<std::string> words);
+    void sessLog(std::vector<std::string> words);
+    void sessExit(std::vector<std::string> words);
 };
 #endif

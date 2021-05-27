@@ -109,10 +109,15 @@ public:
 
 
 class Watch : public BaseAction {
+private:
+    //OURS
+    int id;
 public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session& sess);
     virtual std::string toString() const;
+    //OURS:
+    Watch(int id);
 };
 
 

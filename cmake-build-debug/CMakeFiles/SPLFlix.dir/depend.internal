@@ -19,6 +19,9 @@ CMakeFiles/SPLFlix.dir/User.cpp.o
  /home/aviv/CLionProjects/SPLFlix/User.h
  /home/aviv/CLionProjects/SPLFlix/Watchable.h
 CMakeFiles/SPLFlix.dir/Watchable.cpp.o
+ /home/aviv/CLionProjects/SPLFlix/Action.h
+ /home/aviv/CLionProjects/SPLFlix/Session.h
+ /home/aviv/CLionProjects/SPLFlix/User.h
  /home/aviv/CLionProjects/SPLFlix/Watchable.cpp
  /home/aviv/CLionProjects/SPLFlix/Watchable.h
 CMakeFiles/SPLFlix.dir/main.cpp.o

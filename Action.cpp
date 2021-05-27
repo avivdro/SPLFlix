@@ -186,7 +186,7 @@ void PrintWatchHistory::act(Session &sess) {
     int i=1;
     cout<<"Watch History for " + user->getName()<<endl;
     for(vector<Watchable*>::iterator it=v.begin(); it!=v.end(); it++) {
-        cout << i + ". " + (*it)->toString() << endl;
+        cout << i + ". " + (*it)->toStringForHistory() << endl;
         i++;
     }
     delete user;
@@ -202,11 +202,28 @@ PrintWatchHistory::PrintWatchHistory(){}
 //-------------------------------------------------------------------
 //WATCH
 void Watch::act(Session &sess) {
-
+    //get the watchable and watch it. //TODO from here
+    Watchable* w = sess.getWatchableById(id);
+    if (w == nullptr){
+        string msg = "No movie/episode wuth that id.";
+        setErrorMsg(msg);
+        error(getErrorMsg());
+        return;
+    }
+    cout << "Watching: " + w->toStringForHistory();
+    //add the watchable to user's watch history
+    sess.addToWatchHistory(w);
+    delete w;
+    complete();
 }
 
 std::string Watch::toString() const {
-    return std::string();
+    return "Watch: " + to_string(id) + " -STATUS:" + getStatusString();
+}
+
+Watch::Watch(int id){
+    string msg = "Error watching id " + to_string(id);
+    this->setErrorMsg(msg);
 }
 
 //-------------------------------------------------------------------
