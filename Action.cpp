@@ -152,7 +152,7 @@ void DuplicateUser::act(Session &sess) {
 }
 
 std::string DuplicateUser::toString() const {
-    return "Duplicate user " + oldName + " to new user " + newName;
+    return "Duplicate user " + oldName + " to new user " + newName + " -STATUS: " + getStatusString();
 }
 
 DuplicateUser::DuplicateUser(string &oldName, string &newName) : oldName(oldName), newName(newName){
@@ -213,9 +213,10 @@ std::string Watch::toString() const {
 //PRINT ACTIONS LOG
 void PrintActionsLog::act(Session &sess) {
     vector<BaseAction*> v=sess.getActionsLog();
-    for(vector<BaseAction*>::reverse_iterator it=v.rbegin(); it!=v.rend(); it--){
+    for(auto it=v.rbegin(); it!=v.rend(); it++){
         cout<<(*it)->toString()<<endl;
     }
+    complete();
 }
 
 std::string PrintActionsLog::toString() const {

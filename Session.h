@@ -48,5 +48,6 @@ private:
     void sessChangeUser(std::vector<std::string> words);
     void sessDeleteUser(std::vector<std::string> words);
     void sessDupUser(std::vector<std::string> words);
+    void sessLog();
 };
 #endif

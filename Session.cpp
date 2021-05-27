@@ -198,7 +198,7 @@ void Session::parseInput(string &input){
         cout << "going to watch:"; //TODO delete
     }
     else if (words[0] == "log"){
-        cout << "going to log"; //TODO delete
+        sessLog();
     }
     else if (words[0] == "exit"){
         cout << "exit111"; //TODO delete
@@ -302,6 +302,15 @@ void Session::sessDupUser(std::vector<std::string> words) {
     auto command = new DuplicateUser(words[1], words[2]);
     command->act(*this);
     addActionToLog(command);
+}
+
+
+void Session::sessLog(){
+    //FORMAT: log
+    cout << "got to sessLog" <<endl;
+    auto cmd = new PrintActionsLog();
+    cmd->act(*this);
+    addActionToLog(cmd);
 }
 
 
