@@ -26,6 +26,11 @@ public:
     bool setActiveUser(std::string &name);
     User* getUserByName(std::string &name);
     bool deleteUser(std::string &name);
+    void setExit(bool whatToSet);
+    static void clearInput();
+    User* getActiveUser();
+    std::vector<BaseAction*> getActionsLog();
+
 private:
     //BUILT IN - UNCHANGEABLE
     std::vector<Watchable*> content;
@@ -36,5 +41,12 @@ private:
     void extractContent(const std::string &configFilePath);
     void initDefaultUser();
     const std::unordered_map<std::string, User *> &getUserMap();
+    bool exit; //if true - exit program
+    void parseInput(std::string &whatToDo);
+    void addActionToLog(BaseAction *action);
+    void sessCreateUser(std::vector<std::string> words);
+    void sessChangeUser(std::vector<std::string> words);
+    void sessDeleteUser(std::vector<std::string> words);
+    void sessDupUser(std::vector<std::string> words);
 };
 #endif

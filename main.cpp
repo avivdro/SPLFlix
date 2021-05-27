@@ -2,6 +2,7 @@
 #include "Session.h"
 #include "Watchable.h"
 //#include "../include/Session.h"
+#include <sstream>
 
 using namespace std;
 
@@ -14,10 +15,21 @@ int main(int argc, char** argv){
     }
      */
     //Session s(argv[1]);
-    //TO DO: currently giving code the path to json file manually!
 
+    string st, tmp;
+    st = "split this into five words.";
+    stringstream ss(st);
+    vector<string> words;
+
+    while(getline(ss, tmp, ' ')){
+        words.push_back(tmp);
+    }
+    cout << words.size() << "\n";
+    cout << words[0] << "\n";
+    cout << words[words.size()-1];
+
+    //TODO: currently giving code the path to json file manually!
     Session s("/home/aviv/CLionProjects/SPLFlix/config1.json");
-    s.start();
     return 0;
 }
 

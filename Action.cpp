@@ -16,7 +16,8 @@
 
 #include "Action.h"
 #include "Session.h"
-
+#include <vector>
+#include "Watchable.h"
 using namespace std;
 
 //ctor
@@ -180,12 +181,23 @@ PrintContentList::PrintContentList() {
 //-------------------------------------------------------------------
 //PRINT WATCH HISTORY
 void PrintWatchHistory::act(Session &sess) {
-
+    User *user=sess.getActiveUser();
+    vector<Watchable*> v=user->get_history();
+    int i=1;
+    cout<<"Watch History for " + user->getName()<<endl;
+    for(vector<Watchable*>::iterator it=v.begin(); it!=v.end(); it++) {
+        cout << i + ". " + (*it)->toString() << endl;
+        i++;
+    }
+    delete user;
+    complete();
 }
 
 std::string PrintWatchHistory::toString() const {
-    return std::string();
+    return "Print watch history. -STATUS: " + getStatusString();
 }
+
+PrintWatchHistory::PrintWatchHistory(){}
 
 //-------------------------------------------------------------------
 //WATCH
@@ -200,19 +212,30 @@ std::string Watch::toString() const {
 //-------------------------------------------------------------------
 //PRINT ACTIONS LOG
 void PrintActionsLog::act(Session &sess) {
-
+    vector<BaseAction*> v=sess.getActionsLog();
+    for(vector<BaseAction*>::reverse_iterator it=v.rbegin(); it!=v.rend(); it--){
+        cout<<(*it)->toString()<<endl;
+    }
 }
 
 std::string PrintActionsLog::toString() const {
-    return std::string();
+    return "Print actions log. -STATUS: " + getStatusString();
 }
+
+PrintActionsLog::PrintActionsLog(){}
 
 //-------------------------------------------------------------------
 //EXIT
 void Exit::act(Session &sess) {
-
+    sess.setExit(true);
+    complete();
 }
 
 std::string Exit::toString() const {
-    return std::string();
+    return "Exit session.";
+}
+
+Exit::Exit(){
+    string msg = "Error exiting session.";
+    this->setErrorMsg(msg);
 }

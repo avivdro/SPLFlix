@@ -5,6 +5,7 @@ CMakeFiles/SPLFlix.dir/Action.cpp.o: ../Action.cpp
 CMakeFiles/SPLFlix.dir/Action.cpp.o: ../Action.h
 CMakeFiles/SPLFlix.dir/Action.cpp.o: ../Session.h
 CMakeFiles/SPLFlix.dir/Action.cpp.o: ../User.h
+CMakeFiles/SPLFlix.dir/Action.cpp.o: ../Watchable.h
 
 CMakeFiles/SPLFlix.dir/Session.cpp.o: ../Action.h
 CMakeFiles/SPLFlix.dir/Session.cpp.o: ../Session.cpp

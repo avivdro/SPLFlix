@@ -2,6 +2,7 @@
 // Created by aviv on 20/05/2021.
 //
 
+#include <sstream>
 #include "Session.h"
 #include "Watchable.h"
 #include "User.h"
@@ -9,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <ostream>
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -17,7 +19,7 @@ using namespace std;
 Session::Session(const std::string &configFilePath) {
     cout << "will the real slim shady please stand up?" << endl;
     //TODO remove this :)
-    cout << "SPLFlix is now on!";
+    exit = false;
     extractContent(configFilePath);
     printAllContent(); //TODO remove this test
     //create the default user:
@@ -28,15 +30,24 @@ Session::Session(const std::string &configFilePath) {
 Session::~Session() = default;
 
 void Session::start() {
-    //forever (almost):
-    //get input
-
-    //process what action
-
-    //do the thing
-
-    //repeat!
+    //MAIN EVENT LOOP!!!!!!
+    cout << "SPLFlix is now on!";
+    string input;
+    while (! exit){
+        cout << "\n$ ";
+        getline(cin, input);
+        cout << "start received: " << input;
+        parseInput(input);
+        clearInput();
+    }
+    cout << "You have exited SPLFlix. See you later!";
 }
+
+void Session::clearInput(){
+    cin.clear();
+    int c;
+    while ( (c=getchar()) != '\n' && c != EOF ){;}
+};
 
 void Session::extractContent(const string &configFilePath){
     std::fstream file(configFilePath);
@@ -125,7 +136,172 @@ User* Session::getUserByName(string &name){
 
 bool Session::deleteUser(string &name){
     User *toDelete = getUserByName(name);
+    if(toDelete == nullptr)
+        return false;
     delete toDelete;
     toDelete = nullptr;
     return userMap.erase(name);
 }
+
+void Session::setExit(bool whatToSet){
+    exit = whatToSet;
+}
+
+User* Session::getActiveUser() {
+    return this->activeUser;
+}
+
+std::vector<BaseAction*> Session::getActionsLog(){
+    return this->actionsLog;
+}
+
+
+//------------------------------------------------------------------------
+void Session::parseInput(string &input){
+    //get a string as an input and parse it
+    //then do the action.
+    //createuser <username> <len/gen/rer>
+    //changeuser <username>
+    //deleteuser <username>
+    //dupuser <originalname> <newusername>
+    //content
+    //watchhist
+    //watch <content_id>
+    //log
+    //exit
+
+    istringstream iss(input);
+    vector<string> words{istream_iterator<string>{iss}, istream_iterator<string>{}};
+
+    if (words.empty()){
+        cout << "No input detected.";
+    }
+    if (words[0] == "createuser"){
+        sessCreateUser(words);
+    }
+    else if (words[0] == "changeuser"){
+        sessChangeUser(words);
+    }
+    else if (words[0] == "deleteuser"){
+        sessDeleteUser(words);
+    }
+    else if (words[0] == "dupuser"){
+        sessDupUser(words);
+    }
+    else if (words[0] == "content"){
+        cout << "going to content "; //TODO delete
+    }
+    else if (words[0] == "watchhist"){
+        cout << "going to watch history"; //TODO delete
+    }
+    else if (words[0] == "watch"){
+        cout << "going to watch:"; //TODO delete
+    }
+    else if (words[0] == "log"){
+        cout << "going to log"; //TODO delete
+    }
+    else if (words[0] == "exit"){
+        cout << "exit111"; //TODO delete
+    }
+    else{
+        cout << "'" + words[0] + "'" + " is not a valid command";
+    }
+
+}
+
+void Session::addActionToLog(BaseAction *action) {
+    actionsLog.push_back(action);
+}
+
+//------------------------------------------------------------------------
+//GUIDELINES for sessACTION:
+//input: words vector.
+//check the length of input is ok
+//create Action object
+//act
+//add to actions log
+
+void Session::sessCreateUser(vector<string> words){
+    //FORMAT: createuser <username> <len/gen/rer>
+    //check size of words
+    cout << "size " << words.size();
+    if (words.size() != 3){
+        cout << "Cannot do command: createuser syntax: 'createuser <username> <len/gen/rer>'";
+        return;
+    }
+    //check name is not empty
+    if (words[1].size() == 0){
+        cout <<"Error: username must be at least one character.";
+        return;
+    }
+    //check final argument
+    int code = 0;
+    if (words[2] == "len")
+        code = 1;
+    if (words[2] == "rer")
+        code = 2;
+    if (words[2] == "gen")
+        code = 3;
+    if (code == 0){
+        cout << "Error: last argument must be len/gen/rer";
+    }
+    //doing it!
+    auto command = new CreateUser(words[1], code);
+    command->act(*this);
+    addActionToLog(command);
+};
+
+// sessChangeUser
+void Session::sessChangeUser(vector<string> words) {
+    //FORMAT: changeUser <username>
+    //check size of words
+    if (words.size() != 2) {
+        cout << "Cannot do command: changeuser syntax: 'changeuser <username>'";
+        return;
+    }
+    //check name is not empty
+    if (words[1].size() == 0) {
+        cout << "Error: username must be at least one character.";
+        return;
+    }
+    auto command = new ChangeActiveUser(words[1]);
+    command->act(*this);
+    addActionToLog(command);
+}
+// deleteUser
+void Session::sessDeleteUser(vector<string> words) {
+    //FORMAT: deleteUser <username>
+    //check size of words
+    if (words.size() != 2) {
+        cout << "Cannot do command: deleteuser syntax: 'deleteuser <username>' ";
+        return;
+    }
+    //check name is not empty
+    if (words[1].size() == 0) {
+        cout << "Error: username must be at least one character.";
+        return;
+    }
+    auto command = new DeleteUser(words[1]);
+    command->act(*this);
+    addActionToLog(command);
+}
+
+
+void Session::sessDupUser(std::vector<std::string> words) {
+    //FORMAT: dupuser <originalname> <newusername>
+    //check size of words
+    if (words.size() != 3) {
+        cout << "Cannot do command: dupuser syntax: 'dupuser <originalname> <newusername>' ";
+        return;
+    }
+    //check name is not empty
+    if (words[1].empty() || words[2].empty()) {
+        cout << "Error: username must be at least one character.";
+        return;
+    }
+    auto command = new DuplicateUser(words[1], words[2]);
+    command->act(*this);
+    addActionToLog(command);
+}
+
+

@@ -102,6 +102,9 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act (Session& sess);
     virtual std::string toString() const;
+    //OURS:
+    //ctor
+    PrintWatchHistory();
 };
 
 
@@ -118,6 +121,10 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session& sess);
     virtual std::string toString() const;
+    //OURS:
+    //ctor
+    PrintActionsLog();
+
 };
 
 class Exit : public BaseAction {
@@ -125,5 +132,7 @@ public:
     //BUILT IN - UNCHANGEABLE
     virtual void act(Session& sess);
     virtual std::string toString() const;
+    //OURS - free to add edit and change
+    Exit();
 };
 #endif
