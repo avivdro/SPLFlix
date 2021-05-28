@@ -25,8 +25,9 @@ Session::Session(const std::string &configFilePath) {
     //printAllContent(); //TODO remove this test
     //create the default user:
     initDefaultUser();
-    start();
-    //sortContentByLengthVector(); //delete later
+    sortContentByLengthVector();
+    //start();
+     //delete later
 }
 
 Session::~Session() = default;
@@ -40,7 +41,7 @@ void Session::start() {
         //clearInput();
         cout << "\n$ ";
         getline(cin, input);
-        //cout << "start received: " << input;
+        //cout << "start received: " << input << endl;
         parseInput(input);
         //clearInput();
     }
@@ -168,21 +169,19 @@ std::vector<BaseAction*> Session::getActionsLog(){
 }
 
 void Session::sortContentByLengthVector(){
-    vector<Watchable*> sortedByLength = vector<Watchable *>();
+    //contentSortedByLength = vector<Watchable *>();
     for (auto &w : content){
-        sortedByLength.push_back(w);
+        contentSortedByLength.push_back(w);
     }
-    cout << sortedByLength.size() << endl;
-    if (getWatchableById(1) < getWatchableById(2)){
-        cout << "true" << endl;
-    }
-    else { cout << "false" << endl;}
+    stable_sort(contentSortedByLength.begin(), contentSortedByLength.end(), compare);
+    //for (auto & i : contentSortedByLength){
+        //cout << i->toString() <<  endl;
+    //}
+}
 
-    sort(sortedByLength.begin(), sortedByLength.end());
-    cout << "now by time???" << endl;
-    for (int i = 0; i<sortedByLength.size(); i++){
-        cout << sortedByLength[i]->toString() << "f" << endl; //TODO was here
-    }
+bool Session::compare(const Watchable *w1, const Watchable *w2) //(2)
+{
+    return w1->getLength() < w2->getLength();
 }
 
 //------------------------------------------------------------------------
@@ -198,6 +197,10 @@ void Session::parseInput(string &input){
     //watch <content_id>
     //log
     //exit
+
+    //cout << "parseInput: " << input << "is empty?" << input.empty()<< endl; //for debug
+    if (input.empty()) //check input
+        return;
 
     istringstream iss(input);
     vector<string> words{istream_iterator<string>{iss}, istream_iterator<string>{}};
@@ -224,7 +227,7 @@ void Session::parseInput(string &input){
         sessWatchHistory(words);
     }
     else if (words[0] == "watch"){
-        sessWatch(words);
+        sessWatch2(words);
     }
     else if (words[0] == "log"){
         sessLog(words);
@@ -261,6 +264,15 @@ Watchable* Session::getWatchableById(int id){
 
 int Session::getLastId(){
     return content.size();
+}
+
+bool Session::hasRecommendation(int id){
+    if (id < 1 || id > content.size())
+        return false;
+    if (auto* e = dynamic_cast<Episode*>(content[id-1])){
+        return  (e->getNextEpisodeId() != 0);
+    }
+    return false;
 }
 
 //------------------------------------------------------------------------
@@ -395,8 +407,10 @@ void Session::sessWatch(vector<string> words){
     //TODO was working here
     //get recommendation
     bool didRecommend = false;
-    if (0<id && id<=this->getLastId()){
-        if (auto* e = dynamic_cast<Episode*>(content[id-1])){
+    if (0<id && id<=this->getLastId())
+    {
+        if (auto* e = dynamic_cast<Episode*>(content[id-1]))
+        {
             if (e->getNextEpisodeId() != 0) {
                 cout << "need to recommend " << e->getNextEpisodeId() << endl; //TODO delete
                 string input;
@@ -406,7 +420,7 @@ void Session::sessWatch(vector<string> words){
                 if (input =="y" || input == "Y")
                 {
                     vector<string> nextCmd{"watch", to_string(e->getNextEpisodeId())};
-                    sessWatch(nextCmd);
+                    sessWatch2(nextCmd);
                 }
                 else{
                     clearInput();
@@ -415,6 +429,49 @@ void Session::sessWatch(vector<string> words){
         }
     }
     //ask the user if he wants the recommendation or not.
+}
+void Session::sessWatch2(vector<string> words){
+    //FORMAT: watch <id>
+    //Check that there are exactly two words
+    if (words.size() != 2){
+        cout << "Syntax error: Correct syntax for 'watch' command: 'watch <id>'";
+        return;
+    }
+    //check that words[1] is a number
+    int id = 0;
+    stringstream ss;
+    ss << words[1];
+    ss >> id;
+    if (id ==0 || to_string(id)!=words[1]){
+        cout << "Syntax error: Correct syntax for 'watch' command: 'watch <id>'";
+    }
+    auto cmd = new Watch(id);
+    cmd->act(*this);
+    addActionToLog(cmd);
+
+    string recommendationYN;
+    bool recommend = hasRecommendation(id);
+    if (!recommend)
+        return;
+    while (recommend){
+        //recommend = hasRecommendation(id);
+        cout << "Next recommendation: " << getWatchableById(id+1)->toStringForHistory() << endl;
+        cout << "Would you like to continue watching? [Y/N]: ";
+        cin >> recommendationYN;
+        if (recommendationYN == "y" || recommendationYN == "Y"){
+            //do recommend
+            auto newCmd = new Watch(id+1);
+            newCmd->act(*this);
+            addActionToLog(newCmd);
+            id++;
+            recommend = hasRecommendation(id);
+        }
+        else{
+            //clearInput();
+            recommend = false;
+        }
+    }
+    clearInput();
 }
 
 void Session::sessLog(vector<string> words){

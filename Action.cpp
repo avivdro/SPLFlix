@@ -38,6 +38,7 @@ string BaseAction::getStatusString() const {
         case ERROR: return "Error: " + getErrorMsg();
         case COMPLETED: return "Complete!";
     }
+    return "Error.";
 }
 
 void BaseAction::complete() {
@@ -212,7 +213,7 @@ void Watch::act(Session &sess) {
         error(getErrorMsg());
         return;
     }
-    cout << "Watching: " + w->toStringForHistory();
+    cout << "Watching: " + w->toStringForHistory() <<endl;
     //add the watchable to user's watch history
     sess.addToWatchHistory(w);
     complete();

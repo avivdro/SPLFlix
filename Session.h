@@ -32,6 +32,7 @@ public:
     std::vector<BaseAction*> getActionsLog();
     Watchable* getWatchableById(int id);
     int getLastId();
+    bool hasRecommendation(int id);
     void addToWatchHistory(Watchable *w);
 
 private:
@@ -40,8 +41,8 @@ private:
     std::vector<BaseAction*> actionsLog;
     std::unordered_map<std::string,User*> userMap;
     User* activeUser;
-    std::vector<Watchable*> contentSortedByLength;
     //OURS - free to edit and change
+    std::vector<Watchable*> contentSortedByLength;
     void extractContent(const std::string &configFilePath);
     void initDefaultUser();
     const std::unordered_map<std::string, User *> &getUserMap();
@@ -49,6 +50,7 @@ private:
     void parseInput(std::string &whatToDo);
     void addActionToLog(BaseAction *action);
     void sortContentByLengthVector();
+    static bool compare(const Watchable *w1, const Watchable *w2);
     //-------------------------
     void sessCreateUser(std::vector<std::string> words);
     void sessChangeUser(std::vector<std::string> words);
@@ -57,6 +59,7 @@ private:
     void sessContent(std::vector<std::string> words);
     void sessWatchHistory(std::vector<std::string> words);
     void sessWatch(std::vector<std::string> words);
+    void sessWatch2(std::vector<std::string> words);
     void sessLog(std::vector<std::string> words);
     void sessExit(std::vector<std::string> words);
 };
