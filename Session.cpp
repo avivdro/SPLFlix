@@ -12,6 +12,7 @@
 #include <fstream>
 #include <ostream>
 #include "json.hpp"
+#include <algorithm> //???
 
 using json = nlohmann::json;
 using namespace std;
@@ -36,6 +37,7 @@ void Session::start() {
     cout << "SPLFlix is now on!";
     string input;
     while (! exit){
+        //clearInput();
         cout << "\n$ ";
         getline(cin, input);
         //cout << "start received: " << input;
@@ -166,11 +168,20 @@ std::vector<BaseAction*> Session::getActionsLog(){
 }
 
 void Session::sortContentByLengthVector(){
-    vector<Watchable *> sortedByLength = this->content;
-    std::sort(sortedByLength.begin(), sortedByLength.end());
+    vector<Watchable*> sortedByLength = vector<Watchable *>();
+    for (auto &w : content){
+        sortedByLength.push_back(w);
+    }
+    cout << sortedByLength.size() << endl;
+    if (getWatchableById(1) < getWatchableById(2)){
+        cout << "true" << endl;
+    }
+    else { cout << "false" << endl;}
+
+    sort(sortedByLength.begin(), sortedByLength.end());
     cout << "now by time???" << endl;
     for (int i = 0; i<sortedByLength.size(); i++){
-        cout << sortedByLength[i]->toString() << endl;
+        cout << sortedByLength[i]->toString() << "f" << endl; //TODO was here
     }
 }
 
@@ -236,7 +247,7 @@ void Session::addToWatchHistory(Watchable *w){
 }
 
 Watchable* Session::getWatchableById(int id){
-    if (id>=content.size()) {
+    if (id>content.size()) {
         return nullptr;
     }
     //ok
@@ -396,6 +407,9 @@ void Session::sessWatch(vector<string> words){
                 {
                     vector<string> nextCmd{"watch", to_string(e->getNextEpisodeId())};
                     sessWatch(nextCmd);
+                }
+                else{
+                    clearInput();
                 }
             }
         }

@@ -47,7 +47,8 @@ bool Watchable::operator==(const Watchable &other) const{
 }
 
 bool Watchable::operator<(const Watchable &other) const {
-    return length < other.getLength();
+    cout << "this " << length << " other " << other.getLength() << " result " << (this->length < other.getLength());
+    return (this->length < other.getLength());
 }
 
 //-------------------------------------------------------------------
