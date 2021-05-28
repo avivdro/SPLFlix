@@ -26,7 +26,7 @@ Session::Session(const std::string &configFilePath) {
     //create the default user:
     initDefaultUser();
     sortContentByLengthVector();
-    //start();
+    start();
      //delete later
 }
 
@@ -430,6 +430,7 @@ void Session::sessWatch(vector<string> words){
     }
     //ask the user if he wants the recommendation or not.
 }
+
 void Session::sessWatch2(vector<string> words){
     //FORMAT: watch <id>
     //Check that there are exactly two words

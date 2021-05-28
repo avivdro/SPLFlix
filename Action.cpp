@@ -35,7 +35,7 @@ ActionStatus BaseAction::getStatus() const {
 string BaseAction::getStatusString() const {
     switch (status) {
         case PENDING: return "Pending...";
-        case ERROR: return "Error: " + getErrorMsg();
+        case ERROR: return getErrorMsg();
         case COMPLETED: return "Complete!";
     }
     return "Error.";
@@ -68,6 +68,8 @@ void CreateUser::act(Session &sess) {
     else if (code == 3) //genre
         newUser = new GenreRecommenderUser(name);
     else{
+        string newmsg = "Error! Unknown user type.";
+        setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
     }
@@ -75,6 +77,8 @@ void CreateUser::act(Session &sess) {
         complete();
         return;
     }
+    string newmsg = "Error! Unable to create new user.";
+    setErrorMsg(newmsg);
     error(getErrorMsg());
     delete (newUser);
     newUser = nullptr;
@@ -94,6 +98,8 @@ CreateUser::CreateUser(string &name, int code): name(name), code(code){
 
 void ChangeActiveUser::act(Session &sess) {
     if (!sess.setActiveUser(name)){
+        string newmsg = "Error! User does not exist";
+        setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
     }
@@ -114,8 +120,11 @@ ChangeActiveUser::ChangeActiveUser(std::string &name): name(name){
 void DeleteUser::act(Session &sess) {
     if (sess.deleteUser(name))
         complete();
-    else
+    else{
+        string newmsg = "Error! User does not exist.";
+        setErrorMsg(newmsg);
         error(getErrorMsg());
+    }
 }
 
 std::string DeleteUser::toString() const {
@@ -133,11 +142,15 @@ void DuplicateUser::act(Session &sess) {
     User *old = sess.getUserByName(oldName);
     if (old == nullptr) {
         //this means old user does not exist
+        string newmsg = "Error! User does not exist.";
+        setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
     }
     if (sess.getUserByName(newName) != nullptr) {
         //this means there already exists a user with that name.
+        string newmsg = "Error! User already exists.";
+        setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
     }
@@ -187,6 +200,8 @@ void PrintWatchHistory::act(Session &sess) {
     int i=1;
     string name;
     cout<<"Watch History for " + user->getName()<< endl;
+    if (v.empty())
+        cout << "No movies have been watched yet." <<endl;
     for(auto & w : v) {
         name = (w)->toStringForHistory();
         cout << i << ". " << name << endl;
@@ -208,7 +223,7 @@ void Watch::act(Session &sess) {
     //get the watchable and watch it.
     Watchable* w = sess.getWatchableById(id);
     if (w == nullptr){
-        string msg = "No movie/episode with that id.";
+        string msg = "Error! No movie/episode with that id.";
         setErrorMsg(msg);
         error(getErrorMsg());
         return;
@@ -231,6 +246,7 @@ Watch::Watch(int id): id(id){
 //-------------------------------------------------------------------
 //PRINT ACTIONS LOG
 void PrintActionsLog::act(Session &sess) {
+    cout << "SPLFlix actions log:" << endl;
     vector<BaseAction*> v=sess.getActionsLog();
     for(auto it=v.rbegin(); it!=v.rend(); it++){
         cout<<(*it)->toString()<<endl;
