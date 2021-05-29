@@ -93,6 +93,16 @@ void User::move(User &&other){
 LengthRecommenderUser::LengthRecommenderUser(const std::string &name) : User(name), averageLength(0){}
 
 Watchable *LengthRecommenderUser::getRecommendation(Session &s) {
+    //IF EPISODE:
+    int index = s.getActiveUser()->get_history().size();
+    if (auto* e = dynamic_cast<Episode*>(s.getActiveUser()->get_history()[index-1]))
+    {
+        if (s.hasRecommendation(e->getId())){
+            return s.getWatchableById(e->getId() +1);
+        }
+        return nullptr;
+    }
+    //IF MOVIE:
     //get the contentSortedByLength vector
     vector<Watchable*> v = s.getContent();
     Watchable* toRet = nullptr;   //stack toret
@@ -139,6 +149,16 @@ Watchable *RerunRecommenderUser::getRecommendation(Session &s) {
     //TODO the code works as required by the project guidelines
     //TODO ask marina: there is in inherited problem in the instructions of the rec algorithm
     //it will always recommend the last thing in my history....
+    //IF EPISODE RETURN NEXT EPISODE
+    int index = s.getActiveUser()->get_history().size();
+    if (auto* e = dynamic_cast<Episode*>(s.getActiveUser()->get_history()[index-1]))
+    {
+        if (s.hasRecommendation(e->getId())){
+            return s.getWatchableById(e->getId() +1);
+        }
+        return nullptr;
+    }
+    //IF MOVIE:
     whatWasLastRecommended++;
     if (whatWasLastRecommended == history.size()){
         whatWasLastRecommended = 0;
@@ -164,6 +184,17 @@ GenreRecommenderUser::GenreRecommenderUser(const std::string &name) : User(name)
 }
 
 Watchable *GenreRecommenderUser::getRecommendation(Session &s) {
+    //IF EPISODE
+    int index = s.getActiveUser()->get_history().size();
+    if (auto* e = dynamic_cast<Episode*>(s.getActiveUser()->get_history()[index-1]))
+    {
+        if (s.hasRecommendation(e->getId())){
+            return s.getWatchableById(e->getId() +1);
+        }
+        return nullptr;
+    }
+
+    //IF MOVIE:
     //sort the popularTags into a vector of strings by the popularity
     // create an empty vector of pairs
     vector<pair<string, int>> vec;
