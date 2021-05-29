@@ -18,16 +18,15 @@ using json = nlohmann::json;
 using namespace std;
 
 Session::Session(const std::string &configFilePath) {
-    cout << "will the real slim shady please stand up?" << endl;
-    //TODO remove this :)
     exit = false;
     extractContent(configFilePath);
-    //printAllContent(); //TODO remove this test
-    //create the default user:
-    initDefaultUser();
-    sortContentByLengthVector();
-    start();
-     //delete later
+    if (!content.empty()){
+        //create the default user:
+        initDefaultUser();
+        sortContentByLengthVector();
+        start();
+        //delete later
+    }
 }
 
 Session::~Session() = default;
@@ -64,6 +63,7 @@ void Session::extractContent(const string &configFilePath){
     catch (const std::exception& e){
         cout << "Error opening file" << endl;
         //TODO : EXIT PROGRAM
+        return;
     }
     long id = 1;
     //extracting MOVIES
@@ -122,7 +122,7 @@ void Session::initDefaultUser(){
     string defaultName = "default";
     auto createUser = CreateUser(defaultName, 1);
     createUser.act(*this);
-    setActiveUser(defaultName); //TODO make sure this works
+    setActiveUser(defaultName);
 }
 
 unordered_map<string, User*> const &Session::getUserMap(){
@@ -276,11 +276,6 @@ bool Session::hasRecommendation(int id){
         //this means he watched an episode
         return  (e->getNextEpisodeId() != 0);
     }
-    if (auto* m = dynamic_cast<Movie*>(content[id-1])){
-        //this means he watched a movie.
-        //TODO working here, should not just be false. maybe remove this entire if block?
-        return false;
-    }
     return false;
 }
 
@@ -413,7 +408,6 @@ void Session::sessWatch(vector<string> words){
     cmd->act(*this);
     addActionToLog(cmd);
 
-    //TODO was working here
     //get recommendation
     bool didRecommend = false;
     if (0<id && id<=this->getLastId())
@@ -421,7 +415,6 @@ void Session::sessWatch(vector<string> words){
         if (auto* e = dynamic_cast<Episode*>(content[id-1]))
         {
             if (e->getNextEpisodeId() != 0) {
-                cout << "need to recommend " << e->getNextEpisodeId() << endl; //TODO delete
                 string input;
                 cout << "Next recommendation: " << getWatchableById(e->getNextEpisodeId())->toStringForHistory() << endl;
                 cout << "Would you like to continue watching? [Y/N]: ";
@@ -535,6 +528,11 @@ void Session::sessExit(vector<string> words){
     auto cmd = new Exit();
     cmd->act(*this);
     addActionToLog(cmd);
+    this->content.clear();
+    this->userMap.clear();
+    delete this->activeUser;
+    this->actionsLog.clear();
+    this->contentSortedByLength.clear();
 }
 
 

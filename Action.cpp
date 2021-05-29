@@ -34,11 +34,11 @@ ActionStatus BaseAction::getStatus() const {
 
 string BaseAction::getStatusString() const {
     switch (status) {
-        case PENDING: return "Pending...";
+        case PENDING: return "PENDING";
         case ERROR: return getErrorMsg();
-        case COMPLETED: return "Complete!";
+        case COMPLETED: return "COMPLETE";
     }
-    return "Error.";
+    return "ERROR";
 }
 
 void BaseAction::complete() {
@@ -68,7 +68,7 @@ void CreateUser::act(Session &sess) {
     else if (code == 3) //genre
         newUser = new GenreRecommenderUser(name);
     else{
-        string newmsg = "Error! Unknown user type.";
+        string newmsg = "ERROR: Unknown user type.";
         setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
@@ -77,7 +77,7 @@ void CreateUser::act(Session &sess) {
         complete();
         return;
     }
-    string newmsg = "Error! Unable to create new user.";
+    string newmsg = "ERROR: User with that name already exists.";
     setErrorMsg(newmsg);
     error(getErrorMsg());
     delete (newUser);
@@ -85,7 +85,7 @@ void CreateUser::act(Session &sess) {
 }
 
 std::string CreateUser::toString() const {
-    return "Create user: " + name + " -STATUS: " + getStatusString();
+    return "Create user: " + name + " - " + getStatusString();
 }
 
 CreateUser::CreateUser(string &name, int code): name(name), code(code){
@@ -98,7 +98,7 @@ CreateUser::CreateUser(string &name, int code): name(name), code(code){
 
 void ChangeActiveUser::act(Session &sess) {
     if (!sess.setActiveUser(name)){
-        string newmsg = "Error! User does not exist";
+        string newmsg = "ERROR: User does not exist";
         setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
@@ -107,7 +107,7 @@ void ChangeActiveUser::act(Session &sess) {
 }
 
 std::string ChangeActiveUser::toString() const {
-    return "Change active user to " + name + " -STATUS: " + getStatusString();
+    return "Change active user to " + name + " - " + getStatusString();
 }
 
 ChangeActiveUser::ChangeActiveUser(std::string &name): name(name){
@@ -121,14 +121,14 @@ void DeleteUser::act(Session &sess) {
     if (sess.deleteUser(name))
         complete();
     else{
-        string newmsg = "Error! User does not exist.";
+        string newmsg = "ERROR: User does not exist.";
         setErrorMsg(newmsg);
         error(getErrorMsg());
     }
 }
 
 std::string DeleteUser::toString() const {
-    return "Delete user: " + name + " -STATUS: " + getStatusString();
+    return "Delete user: " + name + " - " + getStatusString();
 }
 
 DeleteUser::DeleteUser(string &name) : name(name){
@@ -142,14 +142,14 @@ void DuplicateUser::act(Session &sess) {
     User *old = sess.getUserByName(oldName);
     if (old == nullptr) {
         //this means old user does not exist
-        string newmsg = "Error! User does not exist.";
+        string newmsg = "ERROR: User does not exist.";
         setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
     }
     if (sess.getUserByName(newName) != nullptr) {
         //this means there already exists a user with that name.
-        string newmsg = "Error! User already exists.";
+        string newmsg = "ERROR: User already exists.";
         setErrorMsg(newmsg);
         error(getErrorMsg());
         return;
@@ -166,7 +166,7 @@ void DuplicateUser::act(Session &sess) {
 }
 
 std::string DuplicateUser::toString() const {
-    return "Duplicate user " + oldName + " to new user " + newName + " -STATUS: " + getStatusString();
+    return "Duplicate user " + oldName + " to new user " + newName + " - " + getStatusString();
 }
 
 DuplicateUser::DuplicateUser(string &oldName, string &newName) : oldName(oldName), newName(newName){
@@ -180,11 +180,10 @@ DuplicateUser::DuplicateUser(string &oldName, string &newName) : oldName(oldName
 void PrintContentList::act(Session &sess) {
     sess.printAllContent();
     complete();
-    //TODO dont know if this works. need to check -aviv
 }
 
 std::string PrintContentList::toString() const {
-    return "Print content list. -STATUS: " + getStatusString();
+    return "Print content list. - " + getStatusString();
 }
 
 PrintContentList::PrintContentList() {
@@ -212,7 +211,7 @@ void PrintWatchHistory::act(Session &sess) {
 }
 
 std::string PrintWatchHistory::toString() const {
-    return "Print watch history. -STATUS: " + getStatusString();
+    return "Print watch history. - " + getStatusString();
 }
 
 PrintWatchHistory::PrintWatchHistory(){}
@@ -223,7 +222,7 @@ void Watch::act(Session &sess) {
     //get the watchable and watch it.
     Watchable* w = sess.getWatchableById(id);
     if (w == nullptr){
-        string msg = "Error! No movie/episode with that id.";
+        string msg = "ERROR: No movie/episode with that id.";
         setErrorMsg(msg);
         error(getErrorMsg());
         return;
@@ -235,7 +234,7 @@ void Watch::act(Session &sess) {
 }
 
 std::string Watch::toString() const {
-    return "Watch: " + to_string(id) + " -STATUS:" + getStatusString();
+    return "Watch: " + to_string(id) + " - " + getStatusString();
 }
 
 Watch::Watch(int id): id(id){
@@ -255,7 +254,7 @@ void PrintActionsLog::act(Session &sess) {
 }
 
 std::string PrintActionsLog::toString() const {
-    return "Print actions log. -STATUS: " + getStatusString();
+    return "Print actions log. - " + getStatusString();
 }
 
 PrintActionsLog::PrintActionsLog(){}
