@@ -163,7 +163,7 @@ Watchable *RerunRecommenderUser::getRecommendation(Session &s) {
     if (whatWasLastRecommended == history.size()){
         whatWasLastRecommended = 0;
     }
-    cout << "what was last rec: " << whatWasLastRecommended << " hist " << history.size() << endl;
+    //cout << "what was last rec: " << whatWasLastRecommended << " hist " << history.size() << endl;
     return history[whatWasLastRecommended];
 }
 
