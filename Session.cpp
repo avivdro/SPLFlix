@@ -527,15 +527,12 @@ void Session::sessExit(vector<string> words){
     auto cmd = new Exit();
     cmd->act(*this);
     addActionToLog(cmd);
+    /*
     this->content.clear();
     this->userMap.clear();
     delete this->activeUser;
     this->actionsLog.clear();
     this->contentSortedByLength.clear();
+     */ //TODO dont know if needed, possibly crashed program upon exit
 }
-
-
-
-
-
 

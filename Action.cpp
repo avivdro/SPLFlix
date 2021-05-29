@@ -174,7 +174,6 @@ DuplicateUser::DuplicateUser(string &oldName, string &newName) : oldName(oldName
     this->setErrorMsg(msg);
 }
 
-
 //-------------------------------------------------------------------
 //PRINT CONTENT LIST
 void PrintContentList::act(Session &sess) {
