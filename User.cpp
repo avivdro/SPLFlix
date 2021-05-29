@@ -3,6 +3,7 @@
 //
 
 #include "User.h"
+#include "Session.h"
 #include "Watchable.h"
 #include <string>
 #include <algorithm>
@@ -91,9 +92,20 @@ void User::move(User &&other){
 //ctor
 LengthRecommenderUser::LengthRecommenderUser(const std::string &name) : User(name), averageLength(0){}
 
-//TODO implement the next method
 Watchable *LengthRecommenderUser::getRecommendation(Session &s) {
-    return nullptr;
+    //get the contentSortedByLength vector
+    vector<Watchable*> v = s.getContent();
+    Watchable* toRet = nullptr;   //stack toret
+    int toRetDistance = averageLength;
+    //search for the closest to this.averageLength() and NOT isInHistory()
+    for (auto &w : v){
+        if ((abs(averageLength - w->getLength()) < toRetDistance) &&(!isInHistory(w))){
+            toRet = w;
+            toRetDistance  = abs(averageLength - w->getLength());
+        }
+    }
+    return toRet;
+    //pretty sure i nailed it. -aviv
 }
 
 //copy ctor
@@ -117,18 +129,28 @@ void LengthRecommenderUser::addToHistory(Watchable *w) {
     averageLength = temp / history.size();
 }
 
-
 //------------------------------------------------------------------------
 //RERUN RECOMMENDER------------------------------
 RerunRecommenderUser::RerunRecommenderUser(const std::string &name) : User(name) {
-
+    whatWasLastRecommended = -1;
 }
 
 Watchable *RerunRecommenderUser::getRecommendation(Session &s) {
-    return nullptr;
+    //TODO the code works as required by the project guidelines
+    //TODO ask marina: there is in inherited problem in the instructions of the rec algorithm
+    //it will always recommend the last thing in my history....
+    whatWasLastRecommended++;
+    if (whatWasLastRecommended == history.size()){
+        whatWasLastRecommended = 0;
+    }
+    cout << "what was last rec: " << whatWasLastRecommended << " hist " << history.size() << endl;
+    return history[whatWasLastRecommended];
 }
 
-//clone
+void RerunRecommenderUser::zeroIndex(){
+    this->whatWasLastRecommended = 0;
+}
+
 User *RerunRecommenderUser::clone(string &name){
     auto *clone = new RerunRecommenderUser(name);
     *clone = *this;
@@ -142,8 +164,52 @@ GenreRecommenderUser::GenreRecommenderUser(const std::string &name) : User(name)
 }
 
 Watchable *GenreRecommenderUser::getRecommendation(Session &s) {
+    //sort the popularTags into a vector of strings by the popularity
+    // create an empty vector of pairs
+    vector<pair<string, int>> vec;
+
+    // copy key-value pairs from the map to the vector
+    std::copy(popularTags.begin(),
+              popularTags.end(),
+              std::back_inserter<std::vector<pair<string, int>>>(vec));
+
+    // sort the vector by increasing the order of its pair's second value
+    // if the second value is equal, order by the pair's first value
+    std::sort(vec.begin(), vec.end(),
+              [](const pair<string, int> &l, const pair<string, int> &r)
+              {
+                  if (l.second != r.second) {
+                      return l.second < r.second;
+                  }
+                  //lexicographic
+                  return l.first < r.first;
+              });
+    //Now for each of the pairs i need to check if there exists a watchable with that tag that i did not yet watch
+    for (auto &p : vec){
+        for (auto* w: s.getContent()){
+            if ((w->hasTag(p.first)) && (!isInHistory(w))){
+                return w;
+            }
+        }
+    }
     return nullptr;
 }
+
+void GenreRecommenderUser::addToHistory(Watchable *w) {
+    User::addToHistory(w);
+    vector<string> *tagsV = w->getTags();
+    for (auto tag : *tagsV){
+        if (popularTags.find(tag) == popularTags.end()){
+            pair<string, int> toInsert(tag, 1);
+            popularTags.insert(toInsert).second;
+        }
+        else{
+            popularTags.find(tag)->second++;
+        }
+    }
+}
+
+
 
 //clone
 User *GenreRecommenderUser::clone(string &name){

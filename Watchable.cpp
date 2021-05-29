@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <iterator>
+#include <algorithm>
 #include "Watchable.h"
 #include "Session.h"
 
@@ -36,6 +37,13 @@ std::string Watchable::getTagsString() const {
         s = s + (*it) + ", ";
     s=s + vec[vec.size()-1] + "]";
     return s;
+}
+
+bool Watchable::hasTag(string &tag){
+    if (std::find(tags.begin(), tags.end(), tag) != tags.end()) {
+        return true;
+    }
+    return false;
 }
 
 //destructor - default

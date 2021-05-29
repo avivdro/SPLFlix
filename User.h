@@ -9,6 +9,8 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <map>
+
 class Watchable;
 class Session;
 
@@ -63,7 +65,6 @@ public:
     virtual User* clone(std::string &name);
 private:
     int averageLength; //this is the avg
-    //void calculateAvg();
 };
 
 class RerunRecommenderUser : public User {
@@ -73,7 +74,9 @@ public:
     virtual Watchable* getRecommendation(Session& s);
     //OURS:
     virtual User* clone(std::string &name);
+    void zeroIndex();
 private:
+    int whatWasLastRecommended;
 };
 
 class GenreRecommenderUser : public User {
@@ -83,7 +86,10 @@ public:
     virtual Watchable* getRecommendation(Session& s);
     //OURS:
     virtual User* clone(std::string &name);
+    virtual void addToHistory(Watchable *w);
 private:
+    //OURS:
+    std::map<std::string, int> popularTags;
 };
 
 #endif

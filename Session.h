@@ -29,6 +29,7 @@ public:
     void setExit(bool whatToSet);
     static void clearInput();
     User* getActiveUser();
+    std::vector<Watchable*> getContent();
     std::vector<BaseAction*> getActionsLog();
     Watchable* getWatchableById(int id);
     int getLastId();

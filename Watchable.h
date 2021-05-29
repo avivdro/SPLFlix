@@ -23,6 +23,7 @@ public:
     virtual int getLength() const;
     virtual std::vector<std::string> * getTags();
     virtual std::string getTagsString() const;
+    virtual bool hasTag(std::string &tag);
     virtual bool operator==(const Watchable &other) const;
     virtual bool operator<(const Watchable &other) const;
     virtual Watchable *clone() = 0;

@@ -164,6 +164,10 @@ User* Session::getActiveUser() {
     return this->activeUser;
 }
 
+vector<Watchable*> Session::getContent(){
+    return content;
+}
+
 std::vector<BaseAction*> Session::getActionsLog(){
     return this->actionsLog;
 }
@@ -179,8 +183,7 @@ void Session::sortContentByLengthVector(){
     //}
 }
 
-bool Session::compare(const Watchable *w1, const Watchable *w2) //(2)
-{
+bool Session::compare(const Watchable *w1, const Watchable *w2){
     return w1->getLength() < w2->getLength();
 }
 
@@ -270,7 +273,13 @@ bool Session::hasRecommendation(int id){
     if (id < 1 || id > content.size())
         return false;
     if (auto* e = dynamic_cast<Episode*>(content[id-1])){
+        //this means he watched an episode
         return  (e->getNextEpisodeId() != 0);
+    }
+    if (auto* m = dynamic_cast<Movie*>(content[id-1])){
+        //this means he watched a movie.
+        //TODO working here, should not just be false. maybe remove this entire if block?
+        return false;
     }
     return false;
 }
@@ -450,29 +459,60 @@ void Session::sessWatch2(vector<string> words){
     cmd->act(*this);
     addActionToLog(cmd);
 
-    string recommendationYN;
-    bool recommend = hasRecommendation(id);
-    if (!recommend)
-        return;
-    while (recommend){
-        //recommend = hasRecommendation(id);
-        cout << "Next recommendation: " << getWatchableById(id+1)->toStringForHistory() << endl;
-        cout << "Would you like to continue watching? [Y/N]: ";
-        cin >> recommendationYN;
-        if (recommendationYN == "y" || recommendationYN == "Y"){
-            //do recommend
-            auto newCmd = new Watch(id+1);
-            newCmd->act(*this);
-            addActionToLog(newCmd);
-            id++;
-            recommend = hasRecommendation(id);
+    //WHAT TO DO IF EPISODE
+    if (auto* e = dynamic_cast<Episode*>(getWatchableById(id))) {
+        string recommendationYN;
+        bool recommend = hasRecommendation(id);
+        if (!recommend)
+            return;
+        while (recommend) {
+            cout << "Next recommendation: " << getWatchableById(id + 1)->toStringForHistory() << endl;
+            cout << "Would you like to continue watching? [Y/N]: ";
+            cin >> recommendationYN;
+            if (recommendationYN == "y" || recommendationYN == "Y") {
+                //do recommend
+                auto newCmd = new Watch(id + 1);
+                newCmd->act(*this);
+                addActionToLog(newCmd);
+                id++;
+                recommend = hasRecommendation(id);
+            } else {
+                //clearInput();
+                recommend = false;
+            }
         }
-        else{
-            //clearInput();
-            recommend = false;
+        clearInput();
+    }
+
+    //WHAT TO DO IF MOVIE
+    if (auto* m = dynamic_cast<Movie*>(getWatchableById(id))){
+        Watchable * w = activeUser->getRecommendation(*this);
+        if (w != nullptr){
+            string recommendationYN;
+            bool recommend = true;
+            while (recommend) {
+                cout << "Next recommendation: " << w->toStringForHistory() << endl;
+                cout << "Would you like to continue watching? [Y/N]: ";
+                cin >> recommendationYN;
+                if (recommendationYN == "y" || recommendationYN == "Y") {
+                    //do recommend
+                    auto newCmd = new Watch(w->getId());
+                    newCmd->act(*this);
+                    addActionToLog(newCmd);
+                    w = activeUser->getRecommendation(*this);
+                    recommend = (w != nullptr);
+                } else {
+                    //clearInput();
+                    if (auto* rerUser = dynamic_cast<RerunRecommenderUser*>(activeUser)){
+                        //THIS IS AN ATTEMPT TO MAKE THE ALGORITHM A LITTLE BETTER
+                        rerUser->zeroIndex();
+                    }
+                    recommend = false;
+                }
+            }
+            clearInput();
         }
     }
-    clearInput();
 }
 
 void Session::sessLog(vector<string> words){
