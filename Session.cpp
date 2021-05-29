@@ -61,8 +61,7 @@ void Session::extractContent(const string &configFilePath){
         j = json::parse(file);
     }
     catch (const std::exception& e){
-        cout << "Error opening file" << endl;
-        //TODO : EXIT PROGRAM
+        cout << "Error opening file. Try again." << endl;
         return;
     }
     long id = 1;

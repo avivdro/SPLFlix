@@ -1,8 +1,12 @@
 
 #include "Session.h"
 #include "Watchable.h"
+
 //#include "../include/Session.h"
 #include <sstream>
+
+#include <unistd.h>
+
 
 using namespace std;
 
@@ -16,8 +20,21 @@ int main(int argc, char** argv){
      */
     //Session s(argv[1]);
 
+    string path = get_current_dir_name();
+    path = path.substr(0, path.size() - 17); //17: cmake/-build-debug
+    string input;
+    cout << "Enter the name of the config file: ";
+    cin >> input;
+    path.append(input);
+    cout << path << endl;
+    cin.clear();
+    int c;
+    while ( (c=getchar()) != '\n' && c != EOF ){;}
+
+
     //TODO: currently giving code the path to json file manually!
-    Session s("/home/aviv/CLionProjects/SPLFlix/config1.json");
+    Session s(path);
+    //Session s("/home/aviv/CLionProjects/SPLFlix/config1.json");
     return 0;
 }
 
