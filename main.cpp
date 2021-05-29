@@ -4,7 +4,6 @@
 
 //#include "../include/Session.h"
 #include <sstream>
-
 #include <unistd.h>
 
 
@@ -26,13 +25,12 @@ int main(int argc, char** argv){
     cout << "Enter the name of the config file: ";
     cin >> input;
     path.append(input);
-    cout << path << endl;
+    //cout << path << endl;
+    //clearInput:
     cin.clear();
     int c;
     while ( (c=getchar()) != '\n' && c != EOF ){;}
 
-
-    //TODO: currently giving code the path to json file manually!
     Session s(path);
     //Session s("/home/aviv/CLionProjects/SPLFlix/config1.json");
     return 0;

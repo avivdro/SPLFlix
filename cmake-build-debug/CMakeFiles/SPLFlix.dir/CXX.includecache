@@ -26,18 +26,6 @@ Action.h
 User.h
 /home/aviv/CLionProjects/SPLFlix/User.h
 
-/home/aviv/CLionProjects/SPLFlix/User.cpp
-User.h
-/home/aviv/CLionProjects/SPLFlix/User.h
-Session.h
-/home/aviv/CLionProjects/SPLFlix/Session.h
-Watchable.h
-/home/aviv/CLionProjects/SPLFlix/Watchable.h
-string
--
-algorithm
--
-
 /home/aviv/CLionProjects/SPLFlix/User.h
 vector
 -
@@ -54,5 +42,15 @@ map
 string
 -
 vector
+-
+
+/home/aviv/CLionProjects/SPLFlix/main.cpp
+Session.h
+/home/aviv/CLionProjects/SPLFlix/Session.h
+Watchable.h
+/home/aviv/CLionProjects/SPLFlix/Watchable.h
+sstream
+-
+unistd.h
 -
 
