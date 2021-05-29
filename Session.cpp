@@ -446,6 +446,7 @@ void Session::sessWatch2(vector<string> words){
     ss >> id;
     if (id ==0 || to_string(id)!=words[1]){
         cout << "Syntax error: Correct syntax for 'watch' command: 'watch <id>'";
+        return;
     }
     auto cmd = new Watch(id);
     cmd->act(*this);
