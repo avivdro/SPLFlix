@@ -46,7 +46,7 @@ void Session::start() {
     }
     cout << "You have exited SPLFlix. See you later!" <<endl;
     cout << "NOW THE PROGRAM STOPPED AND DATA STRUCTURES CAN BE VIEWED IN DEBUG MODE" << endl;
-    cout << "PRESS ENTER TO EXIT THE PROGRAM" << endl;
+    cout << "ENTER A CHAR AND PRESS ENTER TO EXIT THE PROGRAM" << endl;
     cin >> input;
 }
 
