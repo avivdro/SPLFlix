@@ -10,14 +10,17 @@
 using namespace std;
 
 int main(int argc, char** argv){
-    /*
     if(argc!=2)
     {
         cout << "usage splflix input_file" << endl;
         return 0;
     }
-     */
-    //Session s(argv[1]);
+    // cout << argv[1];
+    string path1 = get_current_dir_name();
+    path1 = path1.substr(0, path1.size() - 17); //17: cmake/-build-debug
+    path1.append(argv[1]);
+    Session s1(path1);
+
 
     string path = get_current_dir_name();
     path = path.substr(0, path.size() - 17); //17: cmake/-build-debug
@@ -31,8 +34,9 @@ int main(int argc, char** argv){
     int c;
     while ( (c=getchar()) != '\n' && c != EOF ){;}
 
-    Session s(path);
+    Session s2(path);
     //Session s("/home/aviv/CLionProjects/SPLFlix/config1.json");
+
     return 0;
 }
 

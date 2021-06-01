@@ -210,10 +210,10 @@ Watchable *GenreRecommenderUser::getRecommendation(Session &s) {
               [](const pair<string, int> &l, const pair<string, int> &r)
               {
                   if (l.second != r.second) {
-                      return l.second < r.second;
+                      return l.second > r.second;
                   }
                   //lexicographic
-                  return l.first < r.first;
+                  return l.first > r.first;
               });
     //Now for each of the pairs i need to check if there exists a watchable with that tag that i did not yet watch
     for (auto &p : vec){
