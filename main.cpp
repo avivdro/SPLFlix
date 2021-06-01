@@ -1,4 +1,10 @@
+/*
+  ___ ___ _    ___ _ _     _
+ / __| _ \ |  | __| (_)_ _| |
+ \__ \  _/ |__| _|| | \ \ /_|
+ |___/_| |____|_| |_|_/_\_(_)
 
+ */
 #include "Session.h"
 #include "Watchable.h"
 
@@ -17,10 +23,10 @@ int main(int argc, char** argv){
     }
     // cout << argv[1];
     string path1 = get_current_dir_name();
-    //path1 = path1.substr(0, path1.size() - 17); //17: cmake/-build-debug
-    path1.append("/");
+    //path1 = path1.substr(0, path1.size() - 17); //USE THIS WHEN DEBUGGING IN CLION
+    path1.append("/"); //USE THIS FROM TERMINAL
     path1.append(argv[1]);
-    //cout << path1 << " THIS IS PATH";
+    //cout << path1 << " THIS IS PATH"<<endl;
     Session s1(path1);
 
 
@@ -41,14 +47,3 @@ int main(int argc, char** argv){
 
     return 0;
 }
-
-
-
-
-/*
-  ___ ___ _    ___ _ _     _
- / __| _ \ |  | __| (_)_ _| |
- \__ \  _/ |__| _|| | \ \ /_|
- |___/_| |____|_| |_|_/_\_(_)
-
- */
